@@ -27,3 +27,5 @@
 .film-section{background:#090909;color:white;padding:var(--pad);display:grid;grid-template-columns:.7fr 1.3fr;gap:6vw;align-items:center}.film-copy h2{font-size:clamp(42px,6vw,90px);line-height:.95;letter-spacing:-.055em;margin:20px 0}.film-copy p{font-size:18px;color:#bbb;max-width:480px}.film-section video{width:100%;max-height:78vh;background:#000}
 .project-hero .eyebrow{margin-bottom:26px}.gallery figure{margin:0}
 @media(max-width:850px){.profile-slice,.capabilities,.film-section{grid-template-columns:1fr}.profile-meta,.cap-grid{grid-template-columns:1fr}.profile-slice{padding-top:90px;padding-bottom:90px}.profile-copy>p{font-size:31px}.section-head{padding-top:20px;padding-bottom:20px}}
+
+.lang-switch{font-size:11px;letter-spacing:.12em;border:1px solid currentColor;border-radius:999px;padding:5px 8px;line-height:1;opacity:1!important}
