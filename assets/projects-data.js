@@ -1,0 +1,196 @@
+window.OUSIA_PROJECTS = [
+  {
+    "slug": "hospitality-bar",
+    "number": "01",
+    "title": "Bar & Lounge",
+    "shortTitle": "Hospitality Interior",
+    "category": "Hospitality · Interior Design",
+    "location": "Location on request",
+    "clientType": "Hospitality · Commercial",
+    "role": "Interior Design · Concept Development · Custom Furniture · Visualization",
+    "scope": "Spatial planning, bar concept, bespoke furniture, material selection, lighting concept and visual development.",
+    "status": "Selected Work",
+    "cover": "kitchen.webp",
+    "images": [
+      "kitchen.webp",
+      "bar.webp",
+      "kitchen2.webp"
+    ],
+    "quote": "Spaces change with time. Good design allows them to.",
+    "description": "A hospitality interior developed around social interaction, materiality and atmosphere. The concept organizes bar, dining and circulation areas into a coherent spatial sequence while maintaining a strong visual identity."
+  },
+  {
+    "slug": "private-residence-bolzano",
+    "number": "02",
+    "title": "Private Residence — Bolzano",
+    "shortTitle": "Private Residence",
+    "category": "Residential · Interior Design",
+    "location": "Bolzano, Italy",
+    "clientType": "Private Residential",
+    "role": "Interior Design · Design Development · Custom Furniture · Technical Planning · Visualization",
+    "scope": "Space planning, interior concept, bespoke furniture, kitchen development, detailing and visual presentation.",
+    "status": "Selected Work",
+    "cover": "bolzano.webp",
+    "images": [
+      "bolzano.webp",
+      "plan_bolzano.webp"
+    ],
+    "quote": "A home exists between memory and possibility.",
+    "description": "A private residence developed through a balance of spatial clarity, custom-made elements and a restrained material palette. Furniture, architecture and circulation are treated as one continuous interior language."
+  },
+  {
+    "slug": "workplace-interior",
+    "number": "03",
+    "title": "Workplace Interior",
+    "shortTitle": "Workplace Interior",
+    "category": "Workplace · Commercial",
+    "location": "Location on request",
+    "clientType": "Office · Commercial",
+    "role": "Interior Design · Space Planning · Concept Development · Visualization",
+    "scope": "Workplace planning, circulation, furniture layout, material concept, lighting and visualization.",
+    "status": "Selected Work",
+    "cover": "office.webp",
+    "images": [
+      "office.webp",
+      "plan_office.webp"
+    ],
+    "quote": "Technology should support design decisions, not define them.",
+    "description": "A workplace concept focused on clarity, concentration and spatial efficiency. Focused work areas and shared spaces are organized through a calm architectural language with reduced materials and precise lighting."
+  },
+  {
+    "slug": "contemporary-residence",
+    "number": "04",
+    "title": "Contemporary Private Residence",
+    "shortTitle": "Contemporary Residence",
+    "category": "Residential · Interior Design",
+    "location": "Location on request",
+    "clientType": "Private Residential",
+    "role": "Interior Design · Spatial Concept · Custom Furniture · Visualization",
+    "scope": "Interior architecture, space planning, kitchen design, bespoke furniture, lighting and visual development.",
+    "status": "Selected Work",
+    "cover": "modern2.webp",
+    "images": [
+      "modern2.webp",
+      "modern.webp",
+      "modern3.webp",
+      "plan_modern.webp"
+    ],
+    "quote": "New spaces can still carry memory.",
+    "description": "A contemporary residential interior built around openness, visual continuity and carefully integrated furniture. Architectural elements, lighting and cabinetry define individual zones without fragmenting the overall space."
+  },
+  {
+    "slug": "wellness-suite",
+    "number": "05",
+    "title": "Hospitality Interior — Wellness Suite",
+    "shortTitle": "Wellness Suite",
+    "category": "Hospitality · Wellness",
+    "location": "Location on request",
+    "clientType": "Hospitality · Wellness",
+    "role": "Interior Design · Design Development · Material Concept · Custom Furniture",
+    "scope": "Room concept, wellness integration, materials, bespoke elements, lighting and implementation coordination.",
+    "status": "Completed",
+    "cover": "hotel.webp",
+    "images": [
+      "hotel.webp",
+      "hotel2.webp"
+    ],
+    "quote": "Going beyond means finding possibility within constraints.",
+    "description": "A hospitality interior designed around intimacy, material warmth and the transition between living and wellness spaces. Timber, textiles and controlled lighting create a calm atmosphere around the integrated sauna."
+  },
+  {
+    "slug": "concept-visualization-study",
+    "number": "06",
+    "title": "Concept & Visualization Study",
+    "shortTitle": "Render & Concept",
+    "category": "Concept · Visualization",
+    "location": "Conceptual Study",
+    "clientType": "Design Study",
+    "role": "Concept Design · Spatial Design · Visualization",
+    "scope": "Concept development, architectural composition, material exploration and visual presentation.",
+    "status": "Concept Study",
+    "cover": "modern3.webp",
+    "images": [
+      "modern3.webp",
+      "plan_modern.webp"
+    ],
+    "quote": "Every project begins as a hypothesis about how space could be experienced.",
+    "description": "An exploratory design study investigating architectural form, material contrast and atmosphere. Visualization is used as part of the design process itself, testing proportions, light and spatial relationships before further development."
+  },
+  {
+    "slug": "aimo-real-estate-office",
+    "number": "07",
+    "title": "Aimo Real Estate Office",
+    "shortTitle": "Aimo Real Estate Office",
+    "category": "Commercial · Real Estate",
+    "location": "Location on request",
+    "clientType": "Commercial · Real Estate",
+    "role": "Interior Design · Workplace Concept · Custom Furniture · Visualization",
+    "scope": "Space planning, client-facing areas, meeting spaces, material concept, bespoke furniture and lighting.",
+    "status": "Selected Work",
+    "cover": "realestate.webp",
+    "images": [
+      "realestate.webp",
+      "realestate2.webp"
+    ],
+    "quote": "Commercial interiors communicate before a conversation begins.",
+    "description": "A real-estate office conceived as both a workplace and a representation of the client’s identity. Functional work zones and hospitality-inspired meeting areas create an environment that feels professional without becoming corporate."
+  },
+  {
+    "slug": "hillside-residence",
+    "number": "08",
+    "title": "Hillside Residence — Architectural Concept",
+    "shortTitle": "Hillside Residence",
+    "category": "Residential · Spatial Concept",
+    "location": "Location on request",
+    "clientType": "Private Residential",
+    "role": "Spatial Concept · Interior Direction · Visualization",
+    "scope": "Massing study, spatial organization, façade development, landscape relationship and visualization.",
+    "status": "Concept Study",
+    "cover": "architecture.webp",
+    "images": [
+      "architecture.webp",
+      "architecture2.webp"
+    ],
+    "quote": "Nihil est sine ratione. Nothing is without reason.",
+    "description": "A residential concept developed in direct response to its landscape. The building frames long views while maintaining a strong relationship with the existing terrain through transparency, timber elements and horizontal volumes."
+  },
+  {
+    "slug": "private-wellness-terrace",
+    "number": "09",
+    "title": "Private Wellness Terrace",
+    "shortTitle": "Wellness Terrace",
+    "category": "Exterior · Wellness",
+    "location": "Location on request",
+    "clientType": "Private Residential",
+    "role": "Spatial Design · Custom Detailing · Visualization",
+    "scope": "Terrace layout, wellness concept, material definition, furniture integration and technical development.",
+    "status": "Selected Work",
+    "cover": "terrace.webp",
+    "images": [
+      "terrace.webp",
+      "plan_terrace.webp"
+    ],
+    "quote": "The boundary between interior and exterior can become part of the experience.",
+    "description": "An exterior wellness space designed as an extension of the interior environment. Material continuity, framed views and integrated furniture create a restrained transition between architecture and landscape."
+  },
+  {
+    "slug": "private-bathroom",
+    "number": "10",
+    "title": "Private Bathroom",
+    "shortTitle": "Private Bathroom",
+    "category": "Residential · Interior Design",
+    "location": "Location on request",
+    "clientType": "Private Residential",
+    "role": "Interior Design · Space Planning · Custom Furniture · Visualization",
+    "scope": "Bathroom layout, sanitary planning, bespoke vanity, material selection, lighting and detailing.",
+    "status": "Selected Work",
+    "cover": "bathroom2.webp",
+    "images": [
+      "bathroom2.webp",
+      "plan_bathroom.webp",
+      "bathroom.webp"
+    ],
+    "quote": "The smallest spaces often demand the greatest precision.",
+    "description": "A private bathroom conceived as a compact architectural environment rather than a collection of individual fixtures. Layout, lighting and bespoke elements are developed together to maximize spatial clarity and intimacy."
+  }
+];
