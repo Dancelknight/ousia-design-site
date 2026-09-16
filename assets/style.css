@@ -868,3 +868,53 @@
   .profile-detail-grid{width:calc(100% - 32px);grid-template-columns:1fr;padding:64px 0;gap:26px}
   .profile-detail-grid p{font-size:15px}
 }
+
+/* v13 — exact verified portrait; no filter, crop, overlay or alternate source */
+.profile-unified .profile-card-photo,
+.profile-intro-photo{
+  background:#fff!important;
+  position:relative!important;
+}
+.profile-unified .profile-card-photo{
+  width:220px!important;
+  height:293px!important;
+}
+.profile-intro-photo{
+  width:260px!important;
+  height:347px!important;
+}
+.profile-unified .profile-card-photo::before,
+.profile-unified .profile-card-photo::after,
+.profile-intro-photo::before,
+.profile-intro-photo::after{
+  content:none!important;
+  display:none!important;
+}
+.profile-unified .profile-card-photo img[data-profile-portrait],
+.profile-intro-photo img[data-profile-portrait]{
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  object-fit:contain!important;
+  object-position:center center!important;
+  filter:none!important;
+  mix-blend-mode:normal!important;
+  opacity:0;
+  background:#fff!important;
+  transition:opacity .15s ease;
+}
+.profile-unified .profile-card-photo img[data-profile-portrait].is-loaded,
+.profile-intro-photo img[data-profile-portrait].is-loaded{
+  opacity:1!important;
+}
+@media(max-width:850px){
+  .profile-unified .profile-card-photo{
+    width:126px!important;
+    height:168px!important;
+  }
+  .profile-intro-photo{
+    width:130px!important;
+    height:173px!important;
+  }
+}
