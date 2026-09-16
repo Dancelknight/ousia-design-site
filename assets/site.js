@@ -46,3 +46,22 @@ function nextProjectHTML(p){
 
 const filmSection=document.querySelector('[data-film-section]'),film=document.querySelector('[data-film]');
 if(filmSection&&film&&CONFIG.videoSrc){film.src=CONFIG.videoSrc;filmSection.hidden=false;}
+
+
+const themedSections=[...document.querySelectorAll('[data-header-theme]')];
+if(header&&themedSections.length){
+  const setHeaderTheme=()=>{
+    const y=(header.getBoundingClientRect().bottom+header.getBoundingClientRect().top)/2;
+    let active=null;
+    for(const s of themedSections){
+      const r=s.getBoundingClientRect();
+      if(r.top<=y && r.bottom>=y){active=s;break;}
+    }
+    const dark=active?.dataset.headerTheme==='dark';
+    header.classList.toggle('on-dark',dark);
+    header.classList.toggle('on-light',!dark);
+  };
+  setHeaderTheme();
+  window.addEventListener('scroll',setHeaderTheme,{passive:true});
+  window.addEventListener('resize',setHeaderTheme);
+}

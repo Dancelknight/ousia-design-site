@@ -14,3 +14,22 @@ if(detail){const slug=document.body.dataset.projectSlug;const p=projects.find(x=
 function nextProjectHTML(p){const i=projects.findIndex(x=>x.slug===p.slug),n=projects[(i+1)%projects.length];return `<a class="next" href="../${n.slug}/"><div><small>Nächstes Projekt</small><h2>${n.shortTitle||n.title}</h2></div><span class="text-link">Ansehen</span></a>`}
 const filmSection=document.querySelector('[data-film-section]'),film=document.querySelector('[data-film]');
 if(filmSection&&film&&CONFIG.videoSrc){film.src=CONFIG.videoSrc;filmSection.hidden=false;}
+
+
+const themedSections=[...document.querySelectorAll('[data-header-theme]')];
+if(header&&themedSections.length){
+  const setHeaderTheme=()=>{
+    const y=(header.getBoundingClientRect().bottom+header.getBoundingClientRect().top)/2;
+    let active=null;
+    for(const s of themedSections){
+      const r=s.getBoundingClientRect();
+      if(r.top<=y && r.bottom>=y){active=s;break;}
+    }
+    const dark=active?.dataset.headerTheme==='dark';
+    header.classList.toggle('on-dark',dark);
+    header.classList.toggle('on-light',!dark);
+  };
+  setHeaderTheme();
+  window.addEventListener('scroll',setHeaderTheme,{passive:true});
+  window.addEventListener('resize',setHeaderTheme);
+}
