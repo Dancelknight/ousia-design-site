@@ -918,3 +918,16 @@
     height:173px!important;
   }
 }
+
+/* v14 — direct verified portrait asset */
+.profile-unified .profile-card-photo img,
+.profile-intro-photo img{
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+  object-position:center center!important;
+  filter:none!important;
+  mix-blend-mode:normal!important;
+  opacity:1!important;
+}

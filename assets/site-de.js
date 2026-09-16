@@ -35,24 +35,3 @@ if(header&&themedSections.length){
 }
 
 
-/* exact Daniel portrait loader v20260916 */
-async function loadDanielPortraitExact(){
-  const imgs=[...document.querySelectorAll('[data-profile-portrait]')];
-  if(!imgs.length) return;
-  try{
-    const base=location.hostname.endsWith('github.io') ? '/ousia-design-site/' : '/';
-    const parts=await Promise.all([0,1,2,3].map(async i=>{
-      const r=await fetch(base+'assets/images/portrait_v2_parts/part'+i+'.txt?v=20260916b',{cache:'no-store'});
-      if(!r.ok) throw new Error('portrait part '+i+' '+r.status);
-      return (await r.text()).trim();
-    }));
-    const src='data:image/jpeg;base64,'+parts.join('');
-    imgs.forEach(img=>{
-      img.src=src;
-      img.classList.add('is-loaded');
-    });
-  }catch(err){
-    console.error('Daniel portrait could not be loaded:',err);
-  }
-}
-loadDanielPortraitExact();
