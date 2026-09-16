@@ -1,4 +1,4 @@
-const CONFIG={email:"CHANGE-ME@example.com",linkedin:"#",instagram:"#",videoSrc:""};
+const CONFIG={email:"danielstofner@hotmail.com",linkedin:"#",instagram:"#",videoSrc:""};
 document.querySelectorAll('[data-email]').forEach(a=>{a.textContent=CONFIG.email;a.href='mailto:'+CONFIG.email});
 document.querySelectorAll('[data-linkedin]').forEach(a=>a.href=CONFIG.linkedin);
 document.querySelectorAll('[data-instagram]').forEach(a=>a.href=CONFIG.instagram);

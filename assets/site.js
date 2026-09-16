@@ -1,5 +1,5 @@
 const CONFIG={
-  email:"CHANGE-ME@example.com",
+  email:"danielstofner@hotmail.com",
   linkedin:"#",
   instagram:"#",
   videoSrc:""
