@@ -93,3 +93,31 @@
   .brand{width:205px!important;height:42px}
   .hero-portrait img,.about-photo img{object-position:center 28%}
 }
+
+/* v5 partnership + creative practice */
+.inline-link{
+  border-bottom:1px solid currentColor;
+  padding-bottom:.08em;
+}
+.inline-link:hover{opacity:.62}
+.creative-note{
+  padding:90px var(--pad);
+  display:grid;
+  grid-template-columns:.75fr 1.25fr;
+  gap:8vw;
+  background:var(--sand);
+}
+.creative-note h2{
+  font-size:clamp(44px,6vw,88px);
+  line-height:.95;
+  letter-spacing:-.055em;
+  margin:18px 0 0;
+}
+.creative-note p{
+  font-size:clamp(18px,1.7vw,26px);
+  max-width:720px;
+  margin:0 0 30px;
+}
+@media(max-width:850px){
+  .creative-note{grid-template-columns:1fr;padding-top:75px;padding-bottom:75px}
+}
