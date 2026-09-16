@@ -257,3 +257,121 @@
   .about-story{padding:48px 26px 54px!important}
   .about-story h1{font-size:48px!important}
 }
+
+/* v7: sharp adaptive wordmark + corrected homepage profile */
+.brand{
+  background:none!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  gap:7px!important;
+  width:auto!important;
+  height:42px!important;
+  color:inherit!important;
+  font-size:0!important;
+}
+.brand .mark{
+  display:block!important;
+  width:35px!important;
+  height:35px!important;
+  flex:0 0 35px!important;
+  background:currentColor!important;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg fill='none' stroke='black' stroke-width='8' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='48' cy='52' r='34'/%3E%3Cpath d='M64 21c10 2 18 7 24 15'/%3E%3Cpath d='M84 32l8 1-5 7'/%3E%3Cpath d='M78 27c4 0 8 2 11 5'/%3E%3C/g%3E%3C/svg%3E") center/contain no-repeat!important;
+  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg fill='none' stroke='black' stroke-width='8' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='48' cy='52' r='34'/%3E%3Cpath d='M64 21c10 2 18 7 24 15'/%3E%3Cpath d='M84 32l8 1-5 7'/%3E%3Cpath d='M78 27c4 0 8 2 11 5'/%3E%3C/g%3E%3C/svg%3E") center/contain no-repeat!important;
+  animation:ousia-orbit 1.05s cubic-bezier(.2,.8,.2,1) 1 both!important;
+}
+.brand::after{
+  content:"usia design"!important;
+  width:auto!important;
+  height:auto!important;
+  background:none!important;
+  color:currentColor!important;
+  font-family:Arial,Helvetica,sans-serif!important;
+  font-size:31px!important;
+  font-weight:300!important;
+  letter-spacing:.24em!important;
+  line-height:1!important;
+  white-space:nowrap!important;
+}
+.hero-personal{
+  grid-template-columns:1fr!important;
+  min-height:100svh!important;
+}
+.hero-personal .hero-copy{
+  min-height:100svh!important;
+  padding:150px var(--pad) 90px!important;
+  justify-content:flex-end!important;
+  max-width:1200px;
+}
+.profile-card{
+  margin:110px auto;
+  max-width:1500px;
+  width:calc(100% - (2 * var(--pad)));
+  display:grid;
+  grid-template-columns:.9fr 1.1fr;
+  background:#f7f5ef;
+  border-radius:clamp(46px,7vw,105px);
+  overflow:hidden;
+}
+.profile-card-photo{
+  min-height:720px;
+  background:#ece9e1;
+  overflow:hidden;
+}
+.profile-card-photo img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center 35%;
+  filter:grayscale(100%) contrast(1.22) brightness(.96);
+}
+.profile-card-story{
+  padding:72px clamp(36px,5vw,86px);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+.profile-card-story h2{
+  font-family:Georgia,"Times New Roman",serif;
+  font-weight:400;
+  font-size:clamp(50px,6vw,96px);
+  line-height:.98;
+  letter-spacing:-.045em;
+  margin:18px 0 8px;
+}
+.profile-card-lead{
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:clamp(24px,2.2vw,36px)!important;
+  line-height:1.18!important;
+  margin:0 0 28px!important;
+}
+.profile-card-story>p:not(.profile-card-lead){
+  font-size:clamp(16px,1.25vw,20px);
+  line-height:1.5;
+  max-width:700px;
+}
+.profile-card-meta{
+  display:grid;
+  gap:7px;
+  padding:26px 0 34px;
+  margin-top:14px;
+  border-top:1px solid #d4cec1;
+  font-size:13px;
+  color:var(--muted);
+}
+@media(max-width:850px){
+  .brand{height:34px!important;gap:5px!important}
+  .brand .mark{width:28px!important;height:28px!important;flex-basis:28px!important}
+  .brand::after{font-size:22px!important;letter-spacing:.20em!important}
+  .lang-quick{display:inline-flex!important}
+  .hero-personal .hero-copy{min-height:100svh!important;padding-top:135px!important;padding-bottom:80px!important}
+  .profile-card{
+    grid-template-columns:1fr;
+    width:calc(100% - 36px);
+    margin:72px auto;
+    border-radius:42px;
+  }
+  .profile-card-photo{min-height:520px}
+  .profile-card-photo img{object-position:center 28%}
+  .profile-card-story{padding:48px 26px 54px}
+  .profile-card-story h2{font-size:48px}
+}
