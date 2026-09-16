@@ -61,3 +61,35 @@
 .about-personal{grid-template-columns:1fr;padding-top:72px}.about-photo{min-height:68svh}.about-story{padding-top:70px;padding-bottom:80px}
 .collab-section{grid-template-columns:1fr}.hero-actions{gap:16px}
 }
+
+
+/* v4 brand + portrait + arrow polish */
+.brand{
+  width:clamp(190px,21vw,340px)!important;
+  height:52px;
+  display:block!important;
+  background:url("ousia-logo.svg") left center/contain no-repeat;
+  font-size:0!important;
+  letter-spacing:0!important;
+  flex:0 0 auto;
+}
+.brand .mark{display:none!important}
+.text-link::after{
+  content:"⟶"!important;
+  display:inline-block;
+  margin-left:.6em;
+  font-size:1.15em;
+  line-height:1;
+  transform:translateX(0);
+  transition:transform .22s ease;
+}
+.text-link:hover::after{transform:translateX(7px)}
+.hero-portrait img,.about-photo img{
+  object-position:center 32%;
+  filter:grayscale(100%);
+}
+.hero-portrait,.about-photo{background:#f3f2ee}
+@media(max-width:850px){
+  .brand{width:205px!important;height:42px}
+  .hero-portrait img,.about-photo img{object-position:center 28%}
+}
