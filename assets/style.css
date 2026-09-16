@@ -29,3 +29,35 @@
 @media(max-width:850px){.profile-slice,.capabilities,.film-section{grid-template-columns:1fr}.profile-meta,.cap-grid{grid-template-columns:1fr}.profile-slice{padding-top:90px;padding-bottom:90px}.profile-copy>p{font-size:31px}.section-head{padding-top:20px;padding-bottom:20px}}
 
 .lang-switch{font-size:11px;letter-spacing:.12em;border:1px solid currentColor;border-radius:999px;padding:5px 8px;line-height:1;opacity:1!important}
+
+
+/* v3 personal positioning */
+.hero-personal{grid-template-columns:1.2fr .8fr;align-items:stretch;padding:0;min-height:100svh}
+.hero-personal .hero-copy{padding:150px var(--pad) 70px;display:flex;flex-direction:column;justify-content:flex-end}
+.hero-personal .hero-copy h1{margin-top:18px}
+.hero-lead{font-size:clamp(20px,2.2vw,34px);line-height:1.2;max-width:650px;margin:30px 0 24px}
+.hero-actions{display:flex;gap:28px;flex-wrap:wrap}
+.hero-portrait{min-height:100svh;background:#171717;overflow:hidden;position:relative}
+.hero-portrait img{width:100%;height:100%;object-fit:cover;filter:grayscale(100%)}
+.hero-portrait.missing:before{content:"Portrait coming soon";position:absolute;inset:0;display:grid;place-items:center;color:#aaa;font-size:13px;letter-spacing:.12em;text-transform:uppercase}
+.hero-portrait.missing img{display:none}
+.about-personal{display:grid;grid-template-columns:.9fr 1.1fr;min-height:100svh;background:var(--paper);padding-top:90px}
+.about-photo{min-height:calc(100svh - 90px);background:#ddd;overflow:hidden;position:relative}
+.about-photo img{width:100%;height:100%;object-fit:cover;filter:grayscale(100%)}
+.about-photo.missing:before{content:"Portrait coming soon";position:absolute;inset:0;display:grid;place-items:center;color:#777;font-size:13px;letter-spacing:.12em;text-transform:uppercase}
+.about-photo.missing img{display:none}
+.about-story{padding:90px var(--pad);display:flex;flex-direction:column;justify-content:center}
+.about-story h1{font-size:clamp(58px,8vw,130px);line-height:.88;letter-spacing:-.065em;margin:18px 0 8px}
+.founder-line{text-transform:uppercase;letter-spacing:.16em;font-size:12px;color:var(--muted);margin-bottom:48px}
+.about-story p{font-size:clamp(18px,1.6vw,25px);max-width:760px;margin:0 0 26px}
+.about-story .about-lead{font-family:Georgia,serif;font-size:clamp(28px,3vw,48px);line-height:1.15;margin-bottom:40px}
+.compact-about{padding-top:120px}
+.collab-section{padding:120px var(--pad);display:grid;grid-template-columns:1fr 1fr;gap:8vw;background:#fff}
+.collab-section h2{font-size:clamp(42px,6vw,90px);line-height:.96;letter-spacing:-.055em;margin:20px 0 0;max-width:900px}
+.collab-copy{font-size:clamp(19px,1.7vw,27px);max-width:700px;align-self:end}
+.contact-note{font-size:14px!important;color:#aaa;max-width:560px!important;margin-top:26px}
+@media(max-width:850px){
+.hero-personal{grid-template-columns:1fr;padding:0}.hero-personal .hero-copy{min-height:72svh;padding-top:130px}.hero-portrait{min-height:65svh}
+.about-personal{grid-template-columns:1fr;padding-top:72px}.about-photo{min-height:68svh}.about-story{padding-top:70px;padding-bottom:80px}
+.collab-section{grid-template-columns:1fr}.hero-actions{gap:16px}
+}
