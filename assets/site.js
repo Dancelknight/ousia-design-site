@@ -5,6 +5,9 @@ const CONFIG={
   videoSrc:""
 };
 
+/* Project-specific layout lives in a separate stylesheet so it is easy to maintain. */
+(()=>{if(!document.querySelector('link[data-project-ui]')){const script=[...document.scripts].find(s=>/\/assets\/site\.js(?:\?|$)/.test(s.src));const base=script?new URL('./',script.src):new URL('/assets/',location.origin);const link=document.createElement('link');link.rel='stylesheet';link.href=new URL('project-content.css?v=20260917',base);link.dataset.projectUi='';document.head.appendChild(link);}})();
+
 document.querySelectorAll('[data-email]').forEach(a=>{a.textContent=CONFIG.email;a.href='mailto:'+CONFIG.email});
 document.querySelectorAll('[data-linkedin]').forEach(a=>a.href=CONFIG.linkedin);
 document.querySelectorAll('[data-instagram]').forEach(a=>a.href=CONFIG.instagram);
@@ -60,27 +63,9 @@ if(filmSection&&film&&CONFIG.videoSrc){film.src=CONFIG.videoSrc;filmSection.hidd
 
 const themedSections=[...document.querySelectorAll('[data-header-theme]')];
 if(header&&themedSections.length){
-  const setHeaderTheme=()=>{
-    const y=(header.getBoundingClientRect().bottom+header.getBoundingClientRect().top)/2;
-    let active=null;
-    for(const s of themedSections){const r=s.getBoundingClientRect();if(r.top<=y&&r.bottom>=y){active=s;break;}}
-    const dark=active?.dataset.headerTheme==='dark';
-    header.classList.toggle('on-dark',dark);
-    header.classList.toggle('on-light',!dark);
-  };
+  const setHeaderTheme=()=>{const y=(header.getBoundingClientRect().bottom+header.getBoundingClientRect().top)/2;let active=null;for(const s of themedSections){const r=s.getBoundingClientRect();if(r.top<=y&&r.bottom>=y){active=s;break;}}const dark=active?.dataset.headerTheme==='dark';header.classList.toggle('on-dark',dark);header.classList.toggle('on-light',!dark);};
   setHeaderTheme();window.addEventListener('scroll',setHeaderTheme,{passive:true});window.addEventListener('resize',setHeaderTheme);
 }
 
 /* Rebuild the clean portrait from verified repo chunks and replace every legacy portrait source. */
-(async()=>{
-  const imgs=[...document.querySelectorAll('img[src*="daniel-stofner-profile"]')];
-  if(!imgs.length)return;
-  try{
-    const script=[...document.scripts].find(s=>/\/assets\/site\.js(?:\?|$)/.test(s.src));
-    const assetsBase=script?new URL('./',script.src):new URL('/assets/',location.origin);
-    const parts=await Promise.all(Array.from({length:8},(_,i)=>String(i).padStart(2,'0')).map(async n=>{
-      const u=new URL(`portrait-web-v2/${n}.txt?v=20260917c`,assetsBase);const r=await fetch(u,{cache:'no-store'});if(!r.ok)throw new Error(`portrait ${n}: ${r.status}`);return (await r.text()).replace(/\s+/g,'');
-    }));
-    const src='data:image/jpeg;base64,'+parts.join('');imgs.forEach(img=>{img.removeAttribute('srcset');img.src=src;img.style.imageRendering='auto';});
-  }catch(err){console.error('Portrait load failed',err);}
-})();
+(async()=>{const imgs=[...document.querySelectorAll('img[src*="daniel-stofner-profile"]')];if(!imgs.length)return;try{const script=[...document.scripts].find(s=>/\/assets\/site\.js(?:\?|$)/.test(s.src));const assetsBase=script?new URL('./',script.src):new URL('/assets/',location.origin);const parts=await Promise.all(Array.from({length:8},(_,i)=>String(i).padStart(2,'0')).map(async n=>{const u=new URL(`portrait-web-v2/${n}.txt?v=20260917c`,assetsBase);const r=await fetch(u,{cache:'no-store'});if(!r.ok)throw new Error(`portrait ${n}: ${r.status}`);return (await r.text()).replace(/\s+/g,'');}));const src='data:image/jpeg;base64,'+parts.join('');imgs.forEach(img=>{img.removeAttribute('srcset');img.src=src;img.style.imageRendering='auto';});}catch(err){console.error('Portrait load failed',err);}})();
