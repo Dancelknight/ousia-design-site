@@ -11,11 +11,8 @@ window.OUSIA_PROJECTS = [
     "scope": "Spatial planning, bar concept, bespoke furniture, material selection, lighting concept and visual development.",
     "status": "Selected Work",
     "cover": "kitchen.webp",
-    "images": [
-      "kitchen.webp",
-      "bar.webp",
-      "kitchen2.webp"
-    ],
+    "plan": null,
+    "images": ["kitchen.webp","bar.webp","kitchen2.webp"],
     "quote": "Spaces change with time. Good design allows them to.",
     "description": "A hospitality interior developed around social interaction, materiality and atmosphere. The concept organizes bar, dining and circulation areas into a coherent spatial sequence while maintaining a strong visual identity."
   },
@@ -31,10 +28,8 @@ window.OUSIA_PROJECTS = [
     "scope": "Space planning, interior concept, bespoke furniture, kitchen development, detailing and visual presentation.",
     "status": "Selected Work",
     "cover": "bolzano.webp",
-    "images": [
-      "bolzano.webp",
-      "plan_bolzano.webp"
-    ],
+    "plan": "plan_bolzano.webp",
+    "images": ["bolzano.webp"],
     "quote": "A home exists between memory and possibility.",
     "description": "A private residence developed through a balance of spatial clarity, custom-made elements and a restrained material palette. Furniture, architecture and circulation are treated as one continuous interior language."
   },
@@ -50,10 +45,8 @@ window.OUSIA_PROJECTS = [
     "scope": "Workplace planning, circulation, furniture layout, material concept, lighting and visualization.",
     "status": "Selected Work",
     "cover": "office.webp",
-    "images": [
-      "office.webp",
-      "plan_office.webp"
-    ],
+    "plan": "plan_office.webp",
+    "images": ["office.webp"],
     "quote": "Technology should support design decisions, not define them.",
     "description": "A workplace concept focused on clarity, concentration and spatial efficiency. Focused work areas and shared spaces are organized through a calm architectural language with reduced materials and precise lighting."
   },
@@ -69,12 +62,8 @@ window.OUSIA_PROJECTS = [
     "scope": "Interior architecture, space planning, kitchen design, bespoke furniture, lighting and visual development.",
     "status": "Selected Work",
     "cover": "modern2.webp",
-    "images": [
-      "modern2.webp",
-      "modern.webp",
-      "modern3.webp",
-      "plan_modern.webp"
-    ],
+    "plan": "plan_modern.webp",
+    "images": ["modern2.webp","modern.webp","modern3.webp"],
     "quote": "New spaces can still carry memory.",
     "description": "A contemporary residential interior built around openness, visual continuity and carefully integrated furniture. Architectural elements, lighting and cabinetry define individual zones without fragmenting the overall space."
   },
@@ -90,10 +79,8 @@ window.OUSIA_PROJECTS = [
     "scope": "Room concept, wellness integration, materials, bespoke elements, lighting and implementation coordination.",
     "status": "Completed",
     "cover": "hotel.webp",
-    "images": [
-      "hotel.webp",
-      "hotel2.webp"
-    ],
+    "plan": null,
+    "images": ["hotel.webp","hotel2.webp"],
     "quote": "Going beyond means finding possibility within constraints.",
     "description": "A hospitality interior designed around intimacy, material warmth and the transition between living and wellness spaces. Timber, textiles and controlled lighting create a calm atmosphere around the integrated sauna."
   },
@@ -109,10 +96,8 @@ window.OUSIA_PROJECTS = [
     "scope": "Concept development, architectural composition, material exploration and visual presentation.",
     "status": "Concept Study",
     "cover": "modern3.webp",
-    "images": [
-      "modern3.webp",
-      "plan_modern.webp"
-    ],
+    "plan": "plan_modern.webp",
+    "images": ["modern3.webp"],
     "quote": "Every project begins as a hypothesis about how space could be experienced.",
     "description": "An exploratory design study investigating architectural form, material contrast and atmosphere. Visualization is used as part of the design process itself, testing proportions, light and spatial relationships before further development."
   },
@@ -128,10 +113,8 @@ window.OUSIA_PROJECTS = [
     "scope": "Space planning, client-facing areas, meeting spaces, material concept, bespoke furniture and lighting.",
     "status": "Selected Work",
     "cover": "realestate.webp",
-    "images": [
-      "realestate.webp",
-      "realestate2.webp"
-    ],
+    "plan": null,
+    "images": ["realestate.webp","realestate2.webp"],
     "quote": "Commercial interiors communicate before a conversation begins.",
     "description": "A real-estate office conceived as both a workplace and a representation of the client’s identity. Functional work zones and hospitality-inspired meeting areas create an environment that feels professional without becoming corporate."
   },
@@ -147,10 +130,8 @@ window.OUSIA_PROJECTS = [
     "scope": "Massing study, spatial organization, façade development, landscape relationship and visualization.",
     "status": "Concept Study",
     "cover": "architecture.webp",
-    "images": [
-      "architecture.webp",
-      "architecture2.webp"
-    ],
+    "plan": null,
+    "images": ["architecture.webp","architecture2.webp"],
     "quote": "Nihil est sine ratione. Nothing is without reason.",
     "description": "A residential concept developed in direct response to its landscape. The building frames long views while maintaining a strong relationship with the existing terrain through transparency, timber elements and horizontal volumes."
   },
@@ -166,10 +147,8 @@ window.OUSIA_PROJECTS = [
     "scope": "Terrace layout, wellness concept, material definition, furniture integration and technical development.",
     "status": "Selected Work",
     "cover": "terrace.webp",
-    "images": [
-      "terrace.webp",
-      "plan_terrace.webp"
-    ],
+    "plan": "plan_terrace.webp",
+    "images": ["terrace.webp"],
     "quote": "The boundary between interior and exterior can become part of the experience.",
     "description": "An exterior wellness space designed as an extension of the interior environment. Material continuity, framed views and integrated furniture create a restrained transition between architecture and landscape."
   },
@@ -185,11 +164,8 @@ window.OUSIA_PROJECTS = [
     "scope": "Bathroom layout, sanitary planning, bespoke vanity, material selection, lighting and detailing.",
     "status": "Selected Work",
     "cover": "bathroom2.webp",
-    "images": [
-      "bathroom2.webp",
-      "plan_bathroom.webp",
-      "bathroom.webp"
-    ],
+    "plan": "plan_bathroom.webp",
+    "images": ["bathroom2.webp","bathroom.webp"],
     "quote": "The smallest spaces often demand the greatest precision.",
     "description": "A private bathroom conceived as a compact architectural environment rather than a collection of individual fixtures. Layout, lighting and bespoke elements are developed together to maximize spatial clarity and intimacy."
   }
