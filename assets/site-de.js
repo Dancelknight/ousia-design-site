@@ -15,7 +15,6 @@ function nextProjectHTML(p){const i=projects.findIndex(x=>x.slug===p.slug),n=pro
 const filmSection=document.querySelector('[data-film-section]'),film=document.querySelector('[data-film]');
 if(filmSection&&film&&CONFIG.videoSrc){film.src=CONFIG.videoSrc;filmSection.hidden=false;}
 
-
 const themedSections=[...document.querySelectorAll('[data-header-theme]')];
 if(header&&themedSections.length){
   const setHeaderTheme=()=>{
@@ -34,4 +33,20 @@ if(header&&themedSections.length){
   window.addEventListener('resize',setHeaderTheme);
 }
 
-
+/* Sauberes Portrait aus den verifizierten Repo-Teilen rekonstruieren. */
+(async()=>{
+  const imgs=[...document.querySelectorAll('img[src*="daniel-stofner-profile"]')];
+  if(!imgs.length)return;
+  try{
+    const script=[...document.scripts].find(s=>/\/assets\/site-de\.js(?:\?|$)/.test(s.src));
+    const assetsBase=script?new URL('./',script.src):new URL('/assets/',location.origin);
+    const parts=await Promise.all(Array.from({length:8},(_,i)=>String(i).padStart(2,'0')).map(async n=>{
+      const u=new URL(`portrait-web-v2/${n}.txt?v=20260917c`,assetsBase);
+      const r=await fetch(u,{cache:'no-store'});
+      if(!r.ok)throw new Error(`portrait ${n}: ${r.status}`);
+      return (await r.text()).replace(/\s+/g,'');
+    }));
+    const src='data:image/jpeg;base64,'+parts.join('');
+    imgs.forEach(img=>{img.removeAttribute('srcset');img.src=src;img.style.imageRendering='auto';});
+  }catch(err){console.error('Portrait load failed',err);}
+})();
