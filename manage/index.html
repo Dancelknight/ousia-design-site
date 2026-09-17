@@ -1,0 +1,27 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Ousia Content Manager</title><link rel="stylesheet" href="../assets/manage.css"></head><body>
+<header class="manager-header"><div><strong>Ousia Content Manager</strong><span>Projects · text · images · plans</span></div><a href="../" target="_blank">Open website ↗</a></header>
+<main class="manager-shell">
+  <aside class="manager-sidebar">
+    <div class="manager-language"><button data-lang="en" class="active">EN</button><button data-lang="de">DE</button></div>
+    <div class="manager-actions"><button id="new-project">+ New project</button><button id="duplicate-project">Duplicate</button></div>
+    <div id="project-list" class="manager-project-list"></div>
+    <div class="manager-actions compact"><button id="move-up">↑ Up</button><button id="move-down">↓ Down</button><button id="delete-project" class="danger">Delete</button></div>
+  </aside>
+  <section class="manager-editor">
+    <div class="manager-note"><strong>How it works</strong><p>Edit here. Changes are saved locally in this browser. When ready, download the EN/DE data file and replace the matching file in <code>assets/</code> on GitHub. Image files themselves go into <code>assets/images/</code>.</p></div>
+    <form id="project-form">
+      <div class="field-grid two"><label>Slug<input name="slug" required placeholder="project-name"></label><label>Number<input name="number" placeholder="11"></label></div>
+      <div class="field-grid two"><label>Title<input name="title"></label><label>Short title<input name="shortTitle"></label></div>
+      <div class="field-grid two"><label>Category<input name="category"></label><label>Location<input name="location"></label></div>
+      <div class="field-grid two"><label>Client type<input name="clientType"></label><label>Status<input name="status"></label></div>
+      <label>Role<textarea name="role" rows="2"></textarea></label>
+      <label>Scope<textarea name="scope" rows="3"></textarea></label>
+      <div class="field-grid two"><label>Cover filename<input name="cover" placeholder="cover.webp"></label><label>Plan filename<input name="plan" placeholder="plan_project.webp (optional)"></label></div>
+      <label>Gallery image filenames <small>one filename per line, in display order</small><textarea name="images" rows="7" placeholder="image-01.webp\nimage-02.webp"></textarea></label>
+      <label>Quote<textarea name="quote" rows="2"></textarea></label>
+      <label>Description<textarea name="description" rows="6"></textarea></label>
+    </form>
+    <div class="manager-footer-actions"><a id="preview-project" class="button ghost" target="_blank">Preview project ↗</a><button id="reset-local" class="button ghost">Reset local edits</button><button id="download-data" class="button">Download current data file</button></div>
+  </section>
+</main>
+<script src="../assets/projects-data.js"></script><script src="../assets/projects-data-de.js"></script><script src="../assets/manage.js"></script></body></html>
