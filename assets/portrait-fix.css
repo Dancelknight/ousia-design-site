@@ -1,0 +1,67 @@
+/* Portrait display override — 2026-09-17
+   Purpose: preserve Daniel's portrait without crop, filters, overlays or background masks.
+   Loaded after style.css so it wins over legacy v13/v14/v15 portrait rules. */
+
+.profile-unified .profile-card-photo,
+.profile-page .profile-intro-photo {
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+  border-radius: 0 !important;
+  position: relative !important;
+}
+
+.profile-unified .profile-card-photo::before,
+.profile-unified .profile-card-photo::after,
+.profile-page .profile-intro-photo::before,
+.profile-page .profile-intro-photo::after {
+  content: none !important;
+  display: none !important;
+  background: none !important;
+}
+
+.profile-unified .profile-card-photo {
+  width: 220px !important;
+  height: auto !important;
+  aspect-ratio: 3 / 4 !important;
+}
+
+.profile-page .profile-intro-photo {
+  width: 260px !important;
+  height: auto !important;
+  aspect-ratio: 3 / 4 !important;
+}
+
+.profile-unified .profile-card-photo img,
+.profile-page .profile-intro-photo img {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  object-fit: contain !important;
+  object-position: center center !important;
+  filter: none !important;
+  -webkit-filter: none !important;
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
+  transform: none !important;
+  clip-path: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+@media (max-width: 850px) {
+  .profile-unified .profile-card-photo {
+    width: 128px !important;
+    height: auto !important;
+    aspect-ratio: 3 / 4 !important;
+  }
+
+  .profile-page .profile-intro-photo {
+    width: 136px !important;
+    height: auto !important;
+    aspect-ratio: 3 / 4 !important;
+  }
+}
