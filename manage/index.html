@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Ousia Content Manager</title><link rel="stylesheet" href="../assets/manage.css"></head><body>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Ousia Content Manager</title><link rel="stylesheet" href="../assets/manage.css?v=20260921a"></head><body>
 <header class="manager-header"><div><strong>Ousia Content Manager</strong><span>Projects · text · images · plans</span></div><a href="../" target="_blank">Open website ↗</a></header>
 <main class="manager-shell">
   <aside class="manager-sidebar">
@@ -8,7 +8,7 @@
     <div class="manager-actions compact"><button id="move-up">↑ Up</button><button id="move-down">↓ Down</button><button id="delete-project" class="danger">Delete</button></div>
   </aside>
   <section class="manager-editor">
-    <div class="manager-note"><strong>How it works</strong><p>Edit here. Changes are saved locally in this browser. When ready, download the EN/DE data file and replace the matching file in <code>assets/</code> on GitHub. Image files themselves go into <code>assets/images/</code>.</p></div>
+    <div class="manager-note"><strong>How it works</strong><p>Edit project text and drag photos directly into the project below. Dropped files are stored locally in this browser and can be previewed immediately. To publish them, the same image files still need to be added to <code>assets/images/</code> on GitHub. When ready, download the EN/DE data file below.</p></div>
     <form id="project-form">
       <div class="field-grid two"><label>Slug<input name="slug" required placeholder="project-name"></label><label>Number<input name="number" placeholder="11"></label></div>
       <div class="field-grid two"><label>Title<input name="title"></label><label>Short title<input name="shortTitle"></label></div>
@@ -16,12 +16,35 @@
       <div class="field-grid two"><label>Client type<input name="clientType"></label><label>Status<input name="status"></label></div>
       <label>Role<textarea name="role" rows="2"></textarea></label>
       <label>Scope<textarea name="scope" rows="3"></textarea></label>
-      <div class="field-grid two"><label>Cover filename<input name="cover" placeholder="cover.webp"></label><label>Plan filename<input name="plan" placeholder="plan_project.webp (optional)"></label></div>
-      <label>Gallery image filenames <small>one filename per line, in display order</small><textarea name="images" rows="7" placeholder="image-01.webp\nimage-02.webp"></textarea></label>
+
+      <section class="media-manager">
+        <div class="media-heading"><div><span class="media-kicker">Project media</span><h2>Photos & plans</h2></div><span class="media-help">Drag & drop JPG, PNG or WEBP</span></div>
+
+        <div id="gallery-drop" class="drop-zone" tabindex="0">
+          <input id="gallery-files" type="file" accept="image/jpeg,image/png,image/webp" multiple hidden>
+          <div class="drop-icon">＋</div>
+          <strong>Drop project photos here</strong>
+          <span>or <button type="button" class="inline-upload" id="choose-gallery">choose photos</button></span>
+        </div>
+
+        <div id="media-preview" class="media-preview"></div>
+
+        <div class="field-grid two media-fallbacks">
+          <label>Cover filename<input name="cover" placeholder="cover.webp"></label>
+          <label>Plan filename<input name="plan" placeholder="plan_project.webp (optional)"></label>
+        </div>
+        <label>Gallery image filenames <small>Automatically updated when you drop images. You can also edit manually.</small><textarea name="images" rows="6" placeholder="image-01.webp&#10;image-02.webp"></textarea></label>
+
+        <div class="pending-tools">
+          <span id="pending-count">No locally stored image files</span>
+          <button type="button" id="download-pending" class="button ghost small">Download pending images</button>
+        </div>
+      </section>
+
       <label>Quote<textarea name="quote" rows="2"></textarea></label>
       <label>Description<textarea name="description" rows="6"></textarea></label>
     </form>
     <div class="manager-footer-actions"><a id="preview-project" class="button ghost" target="_blank">Preview project ↗</a><button id="reset-local" class="button ghost">Reset local edits</button><button id="download-data" class="button">Download current data file</button></div>
   </section>
 </main>
-<script src="../assets/projects-data.js"></script><script src="../assets/projects-data-de.js"></script><script src="../assets/manage.js"></script></body></html>
+<script src="../assets/projects-data.js"></script><script src="../assets/projects-data-de.js"></script><script src="../assets/manage.js?v=20260921a"></script></body></html>
