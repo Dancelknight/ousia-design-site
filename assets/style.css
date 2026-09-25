@@ -982,3 +982,26 @@
     border-radius:0!important;
   }
 }
+
+
+/* v17 — CMS wordmark while preserving the animated O */
+.brand.has-custom-wordmark::after{
+  content:""!important;
+  display:block!important;
+  width:230px!important;
+  height:44px!important;
+  background-image:var(--ousia-wordmark-image)!important;
+  background-repeat:no-repeat!important;
+  background-position:left center!important;
+  background-size:contain!important;
+  filter:none!important;
+}
+.site-header.on-dark .brand.has-custom-wordmark::after{
+  filter:brightness(0) invert(1)!important;
+}
+@media(max-width:850px){
+  .brand.has-custom-wordmark::after{
+    width:168px!important;
+    height:34px!important;
+  }
+}
