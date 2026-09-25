@@ -29,15 +29,15 @@
   if(siteSettings.videoFilename===undefined)siteSettings.videoFilename=publicSiteSettings.videoFilename||null;
   if(siteSettings.profileFilename===undefined)siteSettings.profileFilename=publicSiteSettings.profileFilename||null;
   const saveSiteSettings=()=>localStorage.setItem('ousia-site-settings',JSON.stringify(siteSettings));
-  const tabButtons=[...document.querySelectorAll('[data-manager-tab]')];
   const panes=[...document.querySelectorAll('[data-manager-pane]')];
+  const siteNav=document.getElementById('site-nav');
   function setManagerTab(tab){
-    tabButtons.forEach(b=>b.classList.toggle('active',b.dataset.managerTab===tab));
     panes.forEach(p=>p.hidden=p.dataset.managerPane!==tab);
+    siteNav.classList.toggle('active',tab==='site');
+    document.querySelectorAll('#project-list button').forEach((b,i)=>b.classList.toggle('active',tab==='projects'&&i===state.selected));
     localStorage.setItem('ousia-manager-tab',tab);
   }
-  tabButtons.forEach(b=>b.onclick=()=>setManagerTab(b.dataset.managerTab));
-  setManagerTab(localStorage.getItem('ousia-manager-tab')||'projects');
+  siteNav.onclick=()=>setManagerTab('site');
   const save=()=>localStorage.setItem('ousia-content-manager',JSON.stringify(state));
   const currentList=()=>state[state.lang];
   const otherLang=()=>state.lang==='en'?'de':'en';
@@ -63,7 +63,7 @@
 
   function renderList(){
     listEl.innerHTML=currentList().map((p,i)=>`<button type="button" data-index="${i}" class="${i===state.selected?'active':''}"><strong>${p.number||'—'} · ${p.shortTitle||p.title||'Untitled'}</strong><small>${p.slug||'no-slug'}</small></button>`).join('');
-    listEl.querySelectorAll('button').forEach(b=>b.onclick=()=>{state.selected=Number(b.dataset.index);save();render();});
+    listEl.querySelectorAll('button').forEach(b=>b.onclick=()=>{state.selected=Number(b.dataset.index);save();localStorage.setItem('ousia-manager-tab','projects');render();});
   }
   function fillForm(){
     const p=current();if(!p){form.reset();return;}
@@ -120,7 +120,7 @@
   async function render(){
     document.querySelectorAll('[data-lang]').forEach(b=>b.classList.toggle('active',b.dataset.lang===state.lang));
     if(state.selected>=currentList().length)state.selected=Math.max(0,currentList().length-1);
-    renderList();fillForm();await renderMedia();await renderSiteMedia();
+    renderList();fillForm();await renderMedia();await renderSiteMedia();setManagerTab(localStorage.getItem('ousia-manager-tab')||'projects');
   }
 
   function writeForm(){
@@ -169,7 +169,7 @@
 
   document.querySelectorAll('[data-lang]').forEach(b=>b.onclick=()=>{const slug=current()?.slug;state.lang=b.dataset.lang;if(slug){const i=currentList().findIndex(p=>p.slug===slug);state.selected=i>=0?i:Math.min(state.selected,currentList().length-1);}save();render();});
 
-  document.getElementById('new-project').onclick=()=>{
+  document.getElementById('new-project').onclick=()=>{localStorage.setItem('ousia-manager-tab','projects');
     const n=Math.max(state.en.length,state.de.length)+1;const num=String(n).padStart(2,'0');const slug=`new-project-${num}`;
     const shell={slug,number:num,title:'New Project',shortTitle:'New Project',category:'Interior Design',location:'Location on request',clientType:'',role:'',scope:'',status:'Selected Work',cover:'',plan:null,images:[],quote:'',description:''};
     state.en.push(clone(shell));state.de.push({...clone(shell),title:'Neues Projekt',shortTitle:'Neues Projekt',location:'Ort auf Anfrage',status:'Ausgewählte Arbeit'});
@@ -177,7 +177,7 @@
     setTimeout(()=>galleryDrop.scrollIntoView({behavior:'smooth',block:'center'}),100);
   };
 
-  document.getElementById('duplicate-project').onclick=()=>{const p=current();if(!p)return;const slug=p.slug;const newSlug=slug+'-copy';for(const lang of ['en','de']){const idx=state[lang].findIndex(x=>x.slug===slug);const source=idx>=0?state[lang][idx]:p;const copy=clone(source);copy.slug=newSlug;copy.number=String(Math.max(state.en.length,state.de.length)+1).padStart(2,'0');state[lang].splice(Math.max(0,idx)+1,0,copy);}state.selected=currentList().findIndex(x=>x.slug===newSlug);save();render();};
+  document.getElementById('duplicate-project').onclick=()=>{localStorage.setItem('ousia-manager-tab','projects');const p=current();if(!p)return;const slug=p.slug;const newSlug=slug+'-copy';for(const lang of ['en','de']){const idx=state[lang].findIndex(x=>x.slug===slug);const source=idx>=0?state[lang][idx]:p;const copy=clone(source);copy.slug=newSlug;copy.number=String(Math.max(state.en.length,state.de.length)+1).padStart(2,'0');state[lang].splice(Math.max(0,idx)+1,0,copy);}state.selected=currentList().findIndex(x=>x.slug===newSlug);save();render();};
 
   document.getElementById('delete-project').onclick=()=>{const p=current();if(!p||!confirm('Delete this project in EN and DE?'))return;const slug=p.slug;state.en=state.en.filter(x=>x.slug!==slug);state.de=state.de.filter(x=>x.slug!==slug);state.selected=Math.max(0,state.selected-1);save();render();};
 
