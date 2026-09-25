@@ -16,3 +16,9 @@
   .profile-media-preview{width:120px}
   .profile-media-panel .video-actions{grid-column:1/-1}
 }
+
+.manager-tabs{display:flex;gap:8px;margin:0 0 22px;border-bottom:1px solid var(--line);padding-bottom:12px}
+.manager-tab{border:0;background:transparent;padding:9px 14px;border-radius:999px;cursor:pointer;color:var(--muted);font-weight:600}
+.manager-tab.active{background:#111;color:#fff}
+[data-manager-pane][hidden]{display:none!important}
+.site-media-manager[data-manager-pane="site"]{margin-top:0}
