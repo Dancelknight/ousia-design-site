@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Ousia Content Manager</title><link rel="stylesheet" href="../assets/manage.css?v=20260921a"></head><body>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Ousia Content Manager</title><link rel="stylesheet" href="../assets/manage.css?v=20260925b"></head><body>
 <header class="manager-header"><div><strong>Ousia Content Manager</strong><span>Projects · text · images · plans</span></div><a href="../" target="_blank">Open website ↗</a></header>
 <main class="manager-shell">
   <aside class="manager-sidebar">
@@ -10,6 +10,20 @@
   <section class="manager-editor">
     <div class="manager-note"><strong>How it works</strong><p>Edit project text and drag photos directly into the project below. Dropped files are stored locally in this browser and can be previewed immediately. To publish project images, add them to <code>assets/images/</code>. Site media such as the process film can also be managed here.</p></div>
     <section class="site-media-manager">
+      <div class="media-heading"><div><span class="media-kicker">Site media</span><h2>Profile portrait</h2></div><span class="media-help">PNG recommended · transparent background works best</span></div>
+      <div id="profile-drop" class="drop-zone profile-drop" tabindex="0">
+        <input id="profile-file" type="file" accept="image/png,image/jpeg,image/webp" hidden>
+        <div class="drop-icon">＋</div>
+        <strong>Drop your profile image here</strong>
+        <span>or <button type="button" class="inline-upload" id="choose-profile">choose image</button></span>
+      </div>
+      <div id="profile-panel" class="profile-media-panel" hidden>
+        <div class="profile-media-preview"><img id="profile-preview" alt="Profile preview"></div>
+        <div class="video-meta"><strong id="profile-name"></strong><span id="profile-state"></span></div>
+        <div class="video-actions"><button type="button" id="download-profile" class="button ghost small">Download portrait</button><button type="button" id="remove-profile" class="button ghost small danger">Reset portrait</button></div>
+      </div>
+
+      <div class="site-media-divider"></div>
       <div class="media-heading"><div><span class="media-kicker">Site media</span><h2>Homepage process film</h2></div><span class="media-help">MP4 · drag & drop or choose a file</span></div>
       <div id="video-drop" class="drop-zone video-drop" tabindex="0">
         <input id="video-file" type="file" accept="video/mp4" hidden>
@@ -61,4 +75,4 @@
     <div class="manager-footer-actions"><a id="preview-project" class="button ghost" target="_blank">Preview project ↗</a><button id="reset-local" class="button ghost">Reset local edits</button><button id="download-data" class="button">Download current data file</button></div>
   </section>
 </main>
-<script src="../assets/projects-data.js"></script><script src="../assets/projects-data-de.js"></script><script src="../assets/site-settings.js?v=20260925"></script><script src="../assets/manage.js?v=20260925"></script></body></html>
+<script src="../assets/projects-data.js"></script><script src="../assets/projects-data-de.js"></script><script src="../assets/site-settings.js?v=20260925"></script><script src="../assets/manage.js?v=20260925b"></script></body></html>
