@@ -950,3 +950,35 @@
   transform:none!important;
   background:transparent!important;
 }
+
+
+/* v16 — larger transparent homepage portrait */
+.profile-unified{
+  grid-template-columns:minmax(0,1fr) 320px!important;
+  gap:54px!important;
+}
+.profile-unified .profile-card-photo{
+  width:310px!important;
+  height:410px!important;
+  background:transparent!important;
+  border-radius:0!important;
+  overflow:visible!important;
+}
+.profile-unified .profile-card-photo img{
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+  object-position:center bottom!important;
+  background:transparent!important;
+}
+@media(max-width:850px){
+  .profile-unified{
+    grid-template-columns:minmax(0,1fr) 150px!important;
+    gap:18px!important;
+  }
+  .profile-unified .profile-card-photo{
+    width:145px!important;
+    height:195px!important;
+    border-radius:0!important;
+  }
+}
