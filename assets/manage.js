@@ -29,6 +29,15 @@
   if(siteSettings.videoFilename===undefined)siteSettings.videoFilename=publicSiteSettings.videoFilename||null;
   if(siteSettings.profileFilename===undefined)siteSettings.profileFilename=publicSiteSettings.profileFilename||null;
   const saveSiteSettings=()=>localStorage.setItem('ousia-site-settings',JSON.stringify(siteSettings));
+  const tabButtons=[...document.querySelectorAll('[data-manager-tab]')];
+  const panes=[...document.querySelectorAll('[data-manager-pane]')];
+  function setManagerTab(tab){
+    tabButtons.forEach(b=>b.classList.toggle('active',b.dataset.managerTab===tab));
+    panes.forEach(p=>p.hidden=p.dataset.managerPane!==tab);
+    localStorage.setItem('ousia-manager-tab',tab);
+  }
+  tabButtons.forEach(b=>b.onclick=()=>setManagerTab(b.dataset.managerTab));
+  setManagerTab(localStorage.getItem('ousia-manager-tab')||'projects');
   const save=()=>localStorage.setItem('ousia-content-manager',JSON.stringify(state));
   const currentList=()=>state[state.lang];
   const otherLang=()=>state.lang==='en'?'de':'en';
