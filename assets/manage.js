@@ -12,6 +12,12 @@
   const galleryDrop=document.getElementById('gallery-drop');
   const galleryFiles=document.getElementById('gallery-files');
   const pendingCount=document.getElementById('pending-count');
+  const profileDrop=document.getElementById('profile-drop');
+  const profileFile=document.getElementById('profile-file');
+  const profilePanel=document.getElementById('profile-panel');
+  const profilePreview=document.getElementById('profile-preview');
+  const profileName=document.getElementById('profile-name');
+  const profileState=document.getElementById('profile-state');
   const videoDrop=document.getElementById('video-drop');
   const videoFile=document.getElementById('video-file');
   const videoPanel=document.getElementById('video-panel');
@@ -19,7 +25,9 @@
   const videoName=document.getElementById('video-name');
   const videoState=document.getElementById('video-state');
   const publicSiteSettings=window.OUSIA_SITE_SETTINGS||{};
-  const siteSettings=(()=>{try{return JSON.parse(localStorage.getItem('ousia-site-settings')||'null')||{videoFilename:publicSiteSettings.videoFilename||null};}catch{return {videoFilename:publicSiteSettings.videoFilename||null};}})();
+  const siteSettings=(()=>{try{return JSON.parse(localStorage.getItem('ousia-site-settings')||'null')||{videoFilename:publicSiteSettings.videoFilename||null,profileFilename:publicSiteSettings.profileFilename||null};}catch{return {videoFilename:publicSiteSettings.videoFilename||null,profileFilename:publicSiteSettings.profileFilename||null};}})();
+  if(siteSettings.videoFilename===undefined)siteSettings.videoFilename=publicSiteSettings.videoFilename||null;
+  if(siteSettings.profileFilename===undefined)siteSettings.profileFilename=publicSiteSettings.profileFilename||null;
   const saveSiteSettings=()=>localStorage.setItem('ousia-site-settings',JSON.stringify(siteSettings));
   const save=()=>localStorage.setItem('ousia-content-manager',JSON.stringify(state));
   const currentList=()=>state[state.lang];
@@ -77,6 +85,19 @@
     const all=await dbAll();pendingCount.textContent=all.length?`${all.length} locally stored image file${all.length===1?'':'s'} ready for publishing`:'No locally stored image files';
   }
   async function renderSiteMedia(){
+    const profile=siteSettings.profileFilename;
+    if(profile){
+      const localProfile=await dbGet(profile);
+      profilePanel.hidden=false;profileName.textContent=profile;
+      if(localProfile?.blob){
+        const u=URL.createObjectURL(localProfile.blob);objectUrls.push(u);profilePreview.src=u;profileState.textContent='Local CMS upload · used on Home + Profile in this browser';
+      }else{
+        profilePreview.src='../assets/images/'+encodeURIComponent(profile);profileState.textContent='Published portrait · used on Home + Profile';
+      }
+    }else{
+      profilePanel.hidden=true;profilePreview.removeAttribute('src');profileName.textContent='';
+    }
+
     const name=siteSettings.videoFilename;
     if(!name){videoPanel.hidden=true;videoPreview.removeAttribute('src');videoName.textContent='';return;}
     const local=await dbGet(name);
@@ -155,6 +176,28 @@
   document.getElementById('move-up').onclick=()=>move(-1);document.getElementById('move-down').onclick=()=>move(1);
   document.getElementById('reset-local').onclick=()=>{if(!confirm('Discard all local editor changes and reload the live project data?'))return;state.en=clone(originals.en);state.de=clone(originals.de);state.selected=0;save();render();};
 
+  async function addProfile(files){
+    const file=[...files].find(f=>/^image\/(png|jpeg|webp)$/i.test(f.type));if(!file)return;
+    await dbPut(file);siteSettings.profileFilename=file.name;saveSiteSettings();await renderSiteMedia();
+  }
+  ['dragenter','dragover'].forEach(evt=>profileDrop.addEventListener(evt,e=>{e.preventDefault();profileDrop.classList.add('dragging');}));
+  ['dragleave','drop'].forEach(evt=>profileDrop.addEventListener(evt,e=>{e.preventDefault();profileDrop.classList.remove('dragging');}));
+  profileDrop.addEventListener('drop',e=>addProfile(e.dataTransfer.files));
+  profileDrop.addEventListener('click',e=>{if(e.target.closest('button'))return;profileFile.click();});
+  profileDrop.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();profileFile.click();}});
+  document.getElementById('choose-profile').onclick=e=>{e.stopPropagation();profileFile.click();};
+  profileFile.onchange=async()=>{await addProfile(profileFile.files);profileFile.value='';};
+  document.getElementById('download-profile').onclick=async()=>{
+    const name=siteSettings.profileFilename;if(!name)return;const item=await dbGet(name);
+    if(!item?.blob){alert('This portrait is not stored locally in this browser.');return;}
+    const url=URL.createObjectURL(item.blob),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1500);
+  };
+  document.getElementById('remove-profile').onclick=async()=>{
+    const name=siteSettings.profileFilename;if(name)await dbDelete(name);
+    siteSettings.profileFilename=publicSiteSettings.profileFilename||'daniel-stofner-profile-clean.jpg';
+    saveSiteSettings();await renderSiteMedia();
+  };
+
   async function addVideo(files){
     const file=[...files].find(f=>f.type==='video/mp4'||/\.mp4$/i.test(f.name));if(!file)return;
     await dbPut(file);siteSettings.videoFilename=file.name;saveSiteSettings();await renderSiteMedia();
@@ -172,7 +215,7 @@
     const url=URL.createObjectURL(item.blob),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1500);
   };
   document.getElementById('download-settings').onclick=()=>{
-    const body='window.OUSIA_SITE_SETTINGS = '+JSON.stringify({videoFilename:siteSettings.videoFilename||null},null,2)+';\n';
+    const body='window.OUSIA_SITE_SETTINGS = '+JSON.stringify({videoFilename:siteSettings.videoFilename||null,profileFilename:siteSettings.profileFilename||null},null,2)+';\n';
     const blob=new Blob([body],{type:'text/javascript;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='site-settings.js';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
   };
   document.getElementById('remove-video').onclick=async()=>{
