@@ -18,6 +18,12 @@
   const profilePreview=document.getElementById('profile-preview');
   const profileName=document.getElementById('profile-name');
   const profileState=document.getElementById('profile-state');
+  const logoDrop=document.getElementById('logo-drop');
+  const logoFile=document.getElementById('logo-file');
+  const logoPanel=document.getElementById('logo-panel');
+  const logoPreview=document.getElementById('logo-preview');
+  const logoName=document.getElementById('logo-name');
+  const logoState=document.getElementById('logo-state');
   const videoDrop=document.getElementById('video-drop');
   const videoFile=document.getElementById('video-file');
   const videoPanel=document.getElementById('video-panel');
@@ -25,9 +31,10 @@
   const videoName=document.getElementById('video-name');
   const videoState=document.getElementById('video-state');
   const publicSiteSettings=window.OUSIA_SITE_SETTINGS||{};
-  const siteSettings=(()=>{try{return JSON.parse(localStorage.getItem('ousia-site-settings')||'null')||{videoFilename:publicSiteSettings.videoFilename||null,profileFilename:publicSiteSettings.profileFilename||null};}catch{return {videoFilename:publicSiteSettings.videoFilename||null,profileFilename:publicSiteSettings.profileFilename||null};}})();
+  const siteSettings=(()=>{try{return JSON.parse(localStorage.getItem('ousia-site-settings')||'null')||{videoFilename:publicSiteSettings.videoFilename||null,profileFilename:publicSiteSettings.profileFilename||null,logoFilename:publicSiteSettings.logoFilename||null};}catch{return {videoFilename:publicSiteSettings.videoFilename||null,profileFilename:publicSiteSettings.profileFilename||null,logoFilename:publicSiteSettings.logoFilename||null};}})();
   if(siteSettings.videoFilename===undefined)siteSettings.videoFilename=publicSiteSettings.videoFilename||null;
   if(siteSettings.profileFilename===undefined)siteSettings.profileFilename=publicSiteSettings.profileFilename||null;
+  if(siteSettings.logoFilename===undefined)siteSettings.logoFilename=publicSiteSettings.logoFilename||null;
   const saveSiteSettings=()=>localStorage.setItem('ousia-site-settings',JSON.stringify(siteSettings));
   const panes=[...document.querySelectorAll('[data-manager-pane]')];
   const siteNav=document.getElementById('site-nav');
@@ -105,6 +112,19 @@
       }
     }else{
       profilePanel.hidden=true;profilePreview.removeAttribute('src');profileName.textContent='';
+    }
+
+    const logo=siteSettings.logoFilename;
+    if(logo){
+      const localLogo=await dbGet(logo);
+      logoPanel.hidden=false;logoName.textContent=logo;
+      if(localLogo?.blob){
+        const u=URL.createObjectURL(localLogo.blob);objectUrls.push(u);logoPreview.src=u;logoState.textContent='Local CMS upload · keeps the animated O';
+      }else{
+        logoPreview.src='../assets/images/'+encodeURIComponent(logo);logoState.textContent='Published wordmark · animated O remains separate';
+      }
+    }else{
+      logoPanel.hidden=true;logoPreview.removeAttribute('src');logoName.textContent='';
     }
 
     const name=siteSettings.videoFilename;
@@ -207,6 +227,26 @@
     saveSiteSettings();await renderSiteMedia();
   };
 
+  async function addLogo(files){
+    const file=[...files].find(f=>['image/png','image/webp','image/svg+xml'].includes(f.type)||/\.(png|webp|svg)$/i.test(f.name));if(!file)return;
+    await dbPut(file);siteSettings.logoFilename=file.name;saveSiteSettings();await renderSiteMedia();
+  }
+  ['dragenter','dragover'].forEach(evt=>logoDrop.addEventListener(evt,e=>{e.preventDefault();logoDrop.classList.add('dragging');}));
+  ['dragleave','drop'].forEach(evt=>logoDrop.addEventListener(evt,e=>{e.preventDefault();logoDrop.classList.remove('dragging');}));
+  logoDrop.addEventListener('drop',e=>addLogo(e.dataTransfer.files));
+  logoDrop.addEventListener('click',e=>{if(e.target.closest('button'))return;logoFile.click();});
+  logoDrop.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();logoFile.click();}});
+  document.getElementById('choose-logo').onclick=e=>{e.stopPropagation();logoFile.click();};
+  logoFile.onchange=async()=>{await addLogo(logoFile.files);logoFile.value='';};
+  document.getElementById('download-logo').onclick=async()=>{
+    const name=siteSettings.logoFilename;if(!name)return;const item=await dbGet(name);
+    if(!item?.blob){alert('This logo is not stored locally in this browser.');return;}
+    const url=URL.createObjectURL(item.blob),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1500);
+  };
+  document.getElementById('remove-logo').onclick=async()=>{
+    const name=siteSettings.logoFilename;if(name)await dbDelete(name);siteSettings.logoFilename=null;saveSiteSettings();await renderSiteMedia();
+  };
+
   async function addVideo(files){
     const file=[...files].find(f=>f.type==='video/mp4'||/\.mp4$/i.test(f.name));if(!file)return;
     await dbPut(file);siteSettings.videoFilename=file.name;saveSiteSettings();await renderSiteMedia();
@@ -224,7 +264,7 @@
     const url=URL.createObjectURL(item.blob),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1500);
   };
   document.getElementById('download-settings').onclick=()=>{
-    const body='window.OUSIA_SITE_SETTINGS = '+JSON.stringify({videoFilename:siteSettings.videoFilename||null,profileFilename:siteSettings.profileFilename||null},null,2)+';\n';
+    const body='window.OUSIA_SITE_SETTINGS = '+JSON.stringify({videoFilename:siteSettings.videoFilename||null,profileFilename:siteSettings.profileFilename||null,logoFilename:siteSettings.logoFilename||null},null,2)+';\n';
     const blob=new Blob([body],{type:'text/javascript;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='site-settings.js';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
   };
   document.getElementById('remove-video').onclick=async()=>{
