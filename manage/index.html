@@ -8,7 +8,21 @@
     <div class="manager-actions compact"><button id="move-up">↑ Up</button><button id="move-down">↓ Down</button><button id="delete-project" class="danger">Delete</button></div>
   </aside>
   <section class="manager-editor">
-    <div class="manager-note"><strong>How it works</strong><p>Edit project text and drag photos directly into the project below. Dropped files are stored locally in this browser and can be previewed immediately. To publish them, the same image files still need to be added to <code>assets/images/</code> on GitHub. When ready, download the EN/DE data file below.</p></div>
+    <div class="manager-note"><strong>How it works</strong><p>Edit project text and drag photos directly into the project below. Dropped files are stored locally in this browser and can be previewed immediately. To publish project images, add them to <code>assets/images/</code>. Site media such as the process film can also be managed here.</p></div>
+    <section class="site-media-manager">
+      <div class="media-heading"><div><span class="media-kicker">Site media</span><h2>Homepage process film</h2></div><span class="media-help">MP4 · drag & drop or choose a file</span></div>
+      <div id="video-drop" class="drop-zone video-drop" tabindex="0">
+        <input id="video-file" type="file" accept="video/mp4" hidden>
+        <div class="drop-icon">▶</div>
+        <strong>Drop your homepage video here</strong>
+        <span>or <button type="button" class="inline-upload" id="choose-video">choose MP4</button></span>
+      </div>
+      <div id="video-panel" class="video-panel" hidden>
+        <video id="video-preview" controls playsinline preload="metadata"></video>
+        <div class="video-meta"><strong id="video-name"></strong><span id="video-state"></span></div>
+        <div class="video-actions"><button type="button" id="download-video" class="button ghost small">Download video</button><button type="button" id="download-settings" class="button ghost small">Download site-settings.js</button><button type="button" id="remove-video" class="button ghost small danger">Remove</button></div>
+      </div>
+    </section>
     <form id="project-form">
       <div class="field-grid two"><label>Slug<input name="slug" required placeholder="project-name"></label><label>Number<input name="number" placeholder="11"></label></div>
       <div class="field-grid two"><label>Title<input name="title"></label><label>Short title<input name="shortTitle"></label></div>
@@ -47,4 +61,4 @@
     <div class="manager-footer-actions"><a id="preview-project" class="button ghost" target="_blank">Preview project ↗</a><button id="reset-local" class="button ghost">Reset local edits</button><button id="download-data" class="button">Download current data file</button></div>
   </section>
 </main>
-<script src="../assets/projects-data.js"></script><script src="../assets/projects-data-de.js"></script><script src="../assets/manage.js?v=20260921a"></script></body></html>
+<script src="../assets/projects-data.js"></script><script src="../assets/projects-data-de.js"></script><script src="../assets/site-settings.js?v=20260925"></script><script src="../assets/manage.js?v=20260925"></script></body></html>
