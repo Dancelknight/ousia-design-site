@@ -34,6 +34,17 @@
     });
   }
 
+  async function loadLogo(){
+    const name=localSettings.logoFilename||publicSettings.logoFilename||null;
+    if(!name)return;
+    const local=await getLocal(name);
+    const src=local?.blob?URL.createObjectURL(local.blob):new URL('images/'+name,assetsBase).href;
+    document.querySelectorAll('.brand').forEach(brand=>{
+      brand.style.setProperty('--ousia-wordmark-image',`url("${src}")`);
+      brand.classList.add('has-custom-wordmark');
+    });
+  }
+
   async function loadVideo(){
     const section=document.querySelector('[data-film-section]'),video=document.querySelector('[data-film]');
     if(!section||!video)return;
@@ -56,5 +67,6 @@
   }
 
   loadPortrait();
+  loadLogo();
   loadVideo();
 })();
