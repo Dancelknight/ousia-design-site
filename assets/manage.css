@@ -17,8 +17,12 @@
   .profile-media-panel .video-actions{grid-column:1/-1}
 }
 
-.manager-tabs{display:flex;gap:8px;margin:0 0 22px;border-bottom:1px solid var(--line);padding-bottom:12px}
-.manager-tab{border:0;background:transparent;padding:9px 14px;border-radius:999px;cursor:pointer;color:var(--muted);font-weight:600}
-.manager-tab.active{background:#111;color:#fff}
+
+.site-nav-button{display:block;width:100%;text-align:left;border:0;background:transparent;padding:12px 10px;margin:4px 0 16px;border-radius:9px;cursor:pointer;color:var(--ink)}
+.site-nav-button:hover,.site-nav-button.active{background:#111;color:#fff}
+.site-nav-button strong{display:block;font-size:15px}
+.site-nav-button small{display:block;margin-top:3px;color:var(--muted);font-size:11px}
+.site-nav-button.active small{color:#aaa}
+.sidebar-section-label{margin:8px 8px 10px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 [data-manager-pane][hidden]{display:none!important}
 .site-media-manager[data-manager-pane="site"]{margin-top:0}
