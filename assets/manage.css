@@ -4,3 +4,15 @@
 
 @media(max-width:800px){.manager-shell{grid-template-columns:1fr}.manager-sidebar{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line)}.manager-project-list{grid-template-columns:repeat(2,minmax(0,1fr))}.field-grid.two{grid-template-columns:1fr}.manager-editor{padding:24px 18px 70px}.manager-header span{display:none}.media-preview{grid-template-columns:repeat(2,minmax(0,1fr))}.media-heading{align-items:start;flex-direction:column}.pending-tools{align-items:flex-start;flex-direction:column}}
 .site-media-manager{margin:0 0 30px;padding:24px;background:#111;color:#fff;border-radius:14px}.site-media-manager .media-kicker,.site-media-manager .media-help{color:#aaa}.site-media-manager .drop-zone{background:#1c1c1c;border-color:#555;color:#fff}.site-media-manager .drop-zone:hover,.site-media-manager .drop-zone.dragging,.site-media-manager .drop-zone:focus{background:#242424;border-color:#fff}.site-media-manager .drop-zone span{color:#aaa}.site-media-manager .inline-upload{color:#fff}.site-media-manager .drop-icon{border-color:#666}.video-panel{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:18px;align-items:start;margin-top:18px}.video-panel[hidden]{display:none}.video-panel video{width:100%;max-height:420px;background:#000;border-radius:10px}.video-meta{display:grid;gap:8px}.video-meta strong{word-break:break-word}.video-meta span{font-size:12px;color:#aaa;line-height:1.45}.video-actions{display:flex;flex-wrap:wrap;gap:8px;grid-column:2}.video-actions .danger{color:#8f1c1c}@media(max-width:800px){.video-panel{grid-template-columns:1fr}.video-actions{grid-column:auto}}
+
+.site-media-divider{height:1px;background:#3a3a3a;margin:28px 0}
+.profile-media-panel{display:grid;grid-template-columns:180px minmax(0,1fr);gap:18px;align-items:start;margin:18px 0 26px}
+.profile-media-panel[hidden]{display:none}
+.profile-media-preview{width:180px;aspect-ratio:3/4;border-radius:12px;overflow:hidden;background:#262626;display:grid;place-items:center}
+.profile-media-preview img{width:100%;height:100%;object-fit:contain;display:block;background:transparent}
+.profile-media-panel .video-actions{grid-column:2}
+@media(max-width:800px){
+  .profile-media-panel{grid-template-columns:120px minmax(0,1fr)}
+  .profile-media-preview{width:120px}
+  .profile-media-panel .video-actions{grid-column:1/-1}
+}
