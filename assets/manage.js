@@ -52,13 +52,17 @@
   const findOther=slug=>state[otherLang()].find(p=>p.slug===slug)||null;
   const sharedFields=new Set(['slug','number','cover','plan','images']);
   let objectUrls=[];
+  let siteObjectUrls=[];
+  let videoBusy=false;
+  const videoFeedback=document.getElementById('video-feedback');
+  const setVideoFeedback=message=>{videoFeedback.textContent=message;};
 
   const dbPromise=new Promise((resolve,reject)=>{
     const req=indexedDB.open('ousia-content-assets',1);
     req.onupgradeneeded=()=>{const db=req.result;if(!db.objectStoreNames.contains('files'))db.createObjectStore('files',{keyPath:'name'});};
     req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error);
   });
-  async function dbPut(file){const db=await dbPromise;return new Promise((resolve,reject)=>{const tx=db.transaction('files','readwrite');tx.objectStore('files').put({name:file.name,type:file.type,lastModified:file.lastModified,blob:file});tx.oncomplete=()=>resolve();tx.onerror=()=>reject(tx.error);});}
+  async function dbPut(file){const db=await dbPromise;return new Promise((resolve,reject)=>{const tx=db.transaction('files','readwrite');tx.objectStore('files').put({name:file.name,type:file.type,lastModified:file.lastModified,blob:file});tx.oncomplete=()=>resolve();tx.onerror=()=>reject(tx.error);tx.onabort=()=>reject(tx.error||new Error('Storage transaction aborted'));});}
   async function dbGet(name){const db=await dbPromise;return new Promise((resolve,reject)=>{const req=db.transaction('files').objectStore('files').get(name);req.onsuccess=()=>resolve(req.result||null);req.onerror=()=>reject(req.error);});}
   async function dbAll(){const db=await dbPromise;return new Promise((resolve,reject)=>{const req=db.transaction('files').objectStore('files').getAll();req.onsuccess=()=>resolve(req.result||[]);req.onerror=()=>reject(req.error);});}
   async function dbDelete(name){const db=await dbPromise;return new Promise((resolve,reject)=>{const tx=db.transaction('files','readwrite');tx.objectStore('files').delete(name);tx.oncomplete=()=>resolve();tx.onerror=()=>reject(tx.error);});}
@@ -101,12 +105,13 @@
     const all=await dbAll();pendingCount.textContent=all.length?`${all.length} locally stored image file${all.length===1?'':'s'} ready for publishing`:'No locally stored image files';
   }
   async function renderSiteMedia(){
+    siteObjectUrls.forEach(URL.revokeObjectURL);siteObjectUrls=[];
     const profile=siteSettings.profileFilename;
     if(profile){
       const localProfile=await dbGet(profile);
       profilePanel.hidden=false;profileName.textContent=profile;
       if(localProfile?.blob){
-        const u=URL.createObjectURL(localProfile.blob);objectUrls.push(u);profilePreview.src=u;profileState.textContent='Local CMS upload · used on Home + Profile in this browser';
+        const u=URL.createObjectURL(localProfile.blob);siteObjectUrls.push(u);profilePreview.src=u;profileState.textContent='Local CMS upload · used on Home + Profile in this browser';
       }else{
         profilePreview.src='../assets/images/'+encodeURIComponent(profile);profileState.textContent='Published portrait · used on Home + Profile';
       }
@@ -119,7 +124,7 @@
       const localLogo=await dbGet(logo);
       logoPanel.hidden=false;logoName.textContent=logo;
       if(localLogo?.blob){
-        const u=URL.createObjectURL(localLogo.blob);objectUrls.push(u);logoPreview.src=u;logoState.textContent='Local CMS upload · keeps the animated O';
+        const u=URL.createObjectURL(localLogo.blob);siteObjectUrls.push(u);logoPreview.src=u;logoState.textContent='Local CMS upload · keeps the animated O';
       }else{
         logoPreview.src='../assets/images/'+encodeURIComponent(logo);logoState.textContent='Published wordmark · animated O remains separate';
       }
@@ -132,7 +137,7 @@
     const local=await dbGet(name);
     videoPanel.hidden=false;videoName.textContent=name;
     if(local?.blob){
-      const url=URL.createObjectURL(local.blob);objectUrls.push(url);videoPreview.src=url;videoState.textContent='Local CMS upload · previewing now';
+      const url=URL.createObjectURL(local.blob);siteObjectUrls.push(url);videoPreview.src=url;videoState.textContent='Local CMS upload · previewing now';
     }else{
       videoPreview.src='../assets/media/'+encodeURIComponent(name);videoState.textContent='Published filename · file must exist in assets/media/';
     }
@@ -247,17 +252,45 @@
     const name=siteSettings.logoFilename;if(name)await dbDelete(name);siteSettings.logoFilename=null;saveSiteSettings();await renderSiteMedia();
   };
 
-  async function addVideo(files){
-    const file=[...files].find(f=>f.type==='video/mp4'||/\.mp4$/i.test(f.name));if(!file)return;
-    await dbPut(file);siteSettings.videoFilename=file.name;saveSiteSettings();await renderSiteMedia();
+  function isSupportedVideo(file){
+    return /^(video\/(mp4|quicktime|x-m4v|webm))$/i.test(file.type)||/\.(mp4|mov|m4v|webm)$/i.test(file.name);
   }
+  async function addVideo(files){
+    if(videoBusy)return;
+    const file=[...files][0];if(!file)return;
+    if(!isSupportedVideo(file)){setVideoFeedback('Unsupported file. Choose MP4, MOV, M4V or WebM.');return;}
+    if(!file.size){setVideoFeedback('This file is empty. Download it to Files on your phone, then select it again.');return;}
+    videoBusy=true;videoDrop.setAttribute('aria-busy','true');
+    const previous=siteSettings.videoFilename;
+    setVideoFeedback('Saving '+file.name+' ('+(file.size/1048576).toFixed(1)+' MB) on this device…');
+    try{
+      await dbPut(file);
+      siteSettings.videoFilename=file.name;
+      try{saveSiteSettings();}catch(error){siteSettings.videoFilename=previous;throw error;}
+      await renderSiteMedia();
+      setVideoFeedback('Saved on this device. Checking playback… This is a local preview; it is not published yet.');
+    }catch(error){
+      const quota=error?.name==='QuotaExceededError';
+      setVideoFeedback(quota?'Not enough browser storage. Choose a smaller video or free device storage and try again.':'Could not save this video on this device. Try a smaller file from Files in Safari. '+(error?.message||''));
+    }finally{
+      videoBusy=false;videoDrop.removeAttribute('aria-busy');
+    }
+  }
+  videoPreview.addEventListener('loadedmetadata',()=>{
+    videoState.textContent='Preview ready · '+videoPreview.videoWidth+' × '+videoPreview.videoHeight;
+    setVideoFeedback('Preview ready on this device. For wider browser compatibility, use an MP4 encoded with H.264 video and AAC audio. Publishing still requires the video and site-settings.js in GitHub.');
+  });
+  videoPreview.addEventListener('error',()=>{
+    videoState.textContent='Preview unavailable';
+    setVideoFeedback('This browser could not play the video. If it was just selected, the file may still be saved locally. For a selected MOV/HEVC file, export or convert to MP4 with H.264 video and AAC audio. Renaming the extension does not convert it.');
+  });
   ['dragenter','dragover'].forEach(evt=>videoDrop.addEventListener(evt,e=>{e.preventDefault();videoDrop.classList.add('dragging');}));
   ['dragleave','drop'].forEach(evt=>videoDrop.addEventListener(evt,e=>{e.preventDefault();videoDrop.classList.remove('dragging');}));
   videoDrop.addEventListener('drop',e=>addVideo(e.dataTransfer.files));
-  videoDrop.addEventListener('click',e=>{if(e.target.closest('button'))return;videoFile.click();});
+  videoDrop.addEventListener('click',e=>{if(e.target===videoFile||e.target.closest('button')||videoBusy)return;videoFile.click();});
   videoDrop.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();videoFile.click();}});
   document.getElementById('choose-video').onclick=e=>{e.stopPropagation();videoFile.click();};
-  videoFile.onchange=async()=>{await addVideo(videoFile.files);videoFile.value='';};
+  videoFile.onchange=async()=>{try{await addVideo(videoFile.files);}finally{videoFile.value='';}};
   document.getElementById('download-video').onclick=async()=>{
     const name=siteSettings.videoFilename;if(!name)return;const item=await dbGet(name);
     if(!item?.blob){alert('This video is not stored locally in this browser.');return;}

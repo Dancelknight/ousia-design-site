@@ -40,13 +40,14 @@
       </div>
 
       <div class="site-media-divider"></div>
-      <div class="media-heading"><div><span class="media-kicker">Site media</span><h2>Homepage process film</h2></div><span class="media-help">MP4 · drag & drop or choose a file</span></div>
+      <div class="media-heading"><div><span class="media-kicker">Site media</span><h2>Homepage process film</h2></div><span class="media-help">MP4, MOV, M4V or WebM · playback depends on the video codec</span></div>
       <div id="video-drop" class="drop-zone video-drop" tabindex="0">
-        <input id="video-file" type="file" accept="video/mp4" hidden>
+        <input id="video-file" type="file" accept="video/*,.mp4,.mov,.m4v,.webm" hidden>
         <div class="drop-icon">▶</div>
         <strong>Drop your homepage video here</strong>
-        <span>or <button type="button" class="inline-upload" id="choose-video">choose MP4</button></span>
+        <span>or <button type="button" class="inline-upload" id="choose-video">choose video</button></span>
       </div>
+      <p id="video-feedback" role="status" aria-live="polite">Select a video from Photos or Files. It is saved on this device first, not published automatically.</p>
       <div id="video-panel" class="video-panel" hidden>
         <video id="video-preview" controls playsinline preload="metadata"></video>
         <div class="video-meta"><strong id="video-name"></strong><span id="video-state"></span></div>
@@ -93,4 +94,4 @@
     </div>
   </section>
 </main>
-<script src="../assets/projects-data.js"></script><script src="../assets/projects-data-de.js"></script><script src="../assets/site-settings.js?v=20260925c"></script><script src="../assets/manage.js?v=20260925e"></script></body></html>
+<script src="../assets/projects-data.js"></script><script src="../assets/projects-data-de.js"></script><script src="../assets/site-settings.js?v=20260925c"></script><script src="../assets/manage.js?v=20261007-video"></script></body></html>
