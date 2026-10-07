@@ -45,6 +45,39 @@
     });
   }
 
+  function enableScrollPlayback(video){
+    video.muted=true;
+    video.defaultMuted=true;
+    video.playsInline=true;
+    video.setAttribute('muted','');
+    video.setAttribute('playsinline','');
+    if(!('IntersectionObserver' in window))return;
+    const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
+    let inView=false,manualPause=false,automaticPause=false;
+    function syncPlayback(){
+      if(!inView||document.hidden){
+        if(!video.paused){automaticPause=true;video.pause();}
+        return;
+      }
+      if(manualPause||reducedMotion.matches||video.ended)return;
+      const attempt=video.play();
+      if(attempt&&typeof attempt.catch==='function')attempt.catch(()=>{});
+    }
+    video.addEventListener('pause',()=>{
+      if(automaticPause){automaticPause=false;return;}
+      if(inView&&!document.hidden&&!video.ended)manualPause=true;
+    });
+    video.addEventListener('play',()=>{manualPause=false;});
+    video.addEventListener('loadeddata',syncPlayback);
+    document.addEventListener('visibilitychange',syncPlayback);
+    const observer=new IntersectionObserver(entries=>{
+      const entry=entries[0];
+      inView=entry.isIntersecting&&entry.intersectionRatio>=0.15;
+      syncPlayback();
+    },{threshold:[0,0.15]});
+    observer.observe(video);
+  }
+
   async function loadVideo(){
     const section=document.querySelector('[data-film-section]'),video=document.querySelector('[data-film]');
     if(!section||!video)return;
@@ -53,13 +86,13 @@
     const local=await getLocal(filename);
     if(local?.blob){
       video.src=URL.createObjectURL(local.blob);
-      video.preload='metadata';video.playsInline=true;section.hidden=false;return;
+      video.preload='metadata';video.playsInline=true;section.hidden=false;enableScrollPlayback(video);return;
     }
     const url=new URL('media/'+filename,assetsBase);
     try{
       const head=await fetch(url,{method:'HEAD',cache:'no-store'});
       if(!head.ok)throw new Error(String(head.status));
-      video.src=url.href;video.preload='metadata';video.playsInline=true;section.hidden=false;
+      video.src=url.href;video.preload='metadata';video.playsInline=true;section.hidden=false;enableScrollPlayback(video);
     }catch(e){
       section.hidden=true;
       console.warn('Process film not published yet',e);
