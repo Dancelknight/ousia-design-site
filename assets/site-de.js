@@ -1,4 +1,4 @@
-const CONFIG={email:"danielstofner@hotmail.com",linkedin:"https://www.linkedin.com/in/daniel-stofner-4b838a127",instagram:"#",videoSrc:""};
+const CONFIG={email:"info@ousiadesign.ch",linkedin:"https://www.linkedin.com/in/daniel-stofner-4b838a127",instagram:"#",videoSrc:""};
 /* Projektlayout getrennt laden, damit es leicht pflegbar bleibt. */
 (()=>{if(!document.querySelector('link[data-project-ui]')){const script=[...document.scripts].find(s=>/\/assets\/site-de\.js(?:\?|$)/.test(s.src));const base=script?new URL('./',script.src):new URL('/assets/',location.origin);const link=document.createElement('link');link.rel='stylesheet';link.href=new URL('project-content.css?v=20260917',base);link.dataset.projectUi='';document.head.appendChild(link);}})();
 document.querySelectorAll('[data-email]').forEach(a=>{a.textContent=CONFIG.email;a.href='mailto:'+CONFIG.email});

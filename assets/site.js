@@ -1,5 +1,5 @@
 const CONFIG={
-  email:"danielstofner@hotmail.com",
+  email:"info@ousiadesign.ch",
   linkedin:"https://www.linkedin.com/in/daniel-stofner-4b838a127",
   instagram:"#",
   videoSrc:""
