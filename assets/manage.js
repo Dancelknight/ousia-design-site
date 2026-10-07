@@ -1,7 +1,7 @@
 (()=>{
   const clone=v=>JSON.parse(JSON.stringify(v));
   const originals={en:clone(window.OUSIA_PROJECTS||[]),de:clone(window.OUSIA_PROJECTS_DE||[])};
-  const saved=JSON.parse(localStorage.getItem('ousia-content-manager')||'null');
+  const saved=(()=>{try{return JSON.parse(localStorage.getItem('ousia-content-manager')||'null');}catch{return null;}})();
   const state=saved||{en:clone(originals.en),de:clone(originals.de),lang:'en',selected:0};
   if(!state.en)state.en=clone(originals.en);if(!state.de)state.de=clone(originals.de);if(!state.lang)state.lang='en';if(state.selected==null)state.selected=0;
 
@@ -54,15 +54,34 @@
   let objectUrls=[];
   let siteObjectUrls=[];
   let videoBusy=false;
+  let selectedVideoUrl=null;
+  let videoPersistence='';
   const videoFeedback=document.getElementById('video-feedback');
   const setVideoFeedback=message=>{videoFeedback.textContent=message;};
 
   const dbPromise=new Promise((resolve,reject)=>{
-    const req=indexedDB.open('ousia-content-assets',1);
+    let settled=false;
+    const finish=(error,db)=>{if(settled){if(db)db.close();return;}settled=true;clearTimeout(timer);error?reject(error):resolve(db);};
+    const timer=setTimeout(()=>finish(new Error('Browser storage did not open. Close other manager tabs and reload.')),15000);
+    let req;
+    try{req=indexedDB.open('ousia-content-assets',1);}catch(error){finish(error);return;}
     req.onupgradeneeded=()=>{const db=req.result;if(!db.objectStoreNames.contains('files'))db.createObjectStore('files',{keyPath:'name'});};
-    req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error);
+    req.onsuccess=()=>finish(null,req.result);
+    req.onerror=()=>finish(req.error||new Error('Browser storage is unavailable.'));
+    req.onblocked=()=>finish(new Error('Browser storage is blocked. Close other manager tabs and reload.'));
   });
-  async function dbPut(file){const db=await dbPromise;return new Promise((resolve,reject)=>{const tx=db.transaction('files','readwrite');tx.objectStore('files').put({name:file.name,type:file.type,lastModified:file.lastModified,blob:file});tx.oncomplete=()=>resolve();tx.onerror=()=>reject(tx.error);tx.onabort=()=>reject(tx.error||new Error('Storage transaction aborted'));});}
+  dbPromise.catch(()=>{}); // Video selection remains usable even if storage cannot open.
+  async function dbPut(file){
+    const db=await dbPromise;
+    return new Promise((resolve,reject)=>{
+      const tx=db.transaction('files','readwrite');
+      const timer=setTimeout(()=>{try{tx.abort();}catch{}reject(new Error('Saving timed out. Try a smaller video from Files.'));},30000);
+      tx.oncomplete=()=>{clearTimeout(timer);resolve();};
+      tx.onerror=tx.onabort=()=>{clearTimeout(timer);reject(tx.error||new Error('Storage transaction aborted'));};
+      try{tx.objectStore('files').put({name:file.name,type:file.type,lastModified:file.lastModified,blob:file});}
+      catch(error){clearTimeout(timer);try{tx.abort();}catch{}reject(error);}
+    });
+  }
   async function dbGet(name){const db=await dbPromise;return new Promise((resolve,reject)=>{const req=db.transaction('files').objectStore('files').get(name);req.onsuccess=()=>resolve(req.result||null);req.onerror=()=>reject(req.error);});}
   async function dbAll(){const db=await dbPromise;return new Promise((resolve,reject)=>{const req=db.transaction('files').objectStore('files').getAll();req.onsuccess=()=>resolve(req.result||[]);req.onerror=()=>reject(req.error);});}
   async function dbDelete(name){const db=await dbPromise;return new Promise((resolve,reject)=>{const tx=db.transaction('files','readwrite');tx.objectStore('files').delete(name);tx.oncomplete=()=>resolve();tx.onerror=()=>reject(tx.error);});}
@@ -257,39 +276,46 @@
   }
   async function addVideo(files){
     if(videoBusy)return;
-    const file=[...files][0];if(!file)return;
-    if(!isSupportedVideo(file)){setVideoFeedback('Unsupported file. Choose MP4, MOV, M4V or WebM.');return;}
-    if(!file.size){setVideoFeedback('This file is empty. Download it to Files on your phone, then select it again.');return;}
-    videoBusy=true;videoDrop.setAttribute('aria-busy','true');
+    const file=[...files][0];
+    if(!file){setVideoFeedback('No file was received from the picker. If the movie is in iCloud, download it to Files first and select it there.');return;}
+    if(!isSupportedVideo(file)){setVideoFeedback('Unsupported file: '+file.name+'. Choose MP4, MOV, M4V or WebM.');return;}
+    if(!file.size){setVideoFeedback('The selected file is empty. Download it to Files first, then select it again.');return;}
+    videoBusy=true;videoFile.disabled=true;videoDrop.setAttribute('aria-busy','true');
     const previous=siteSettings.videoFilename;
-    setVideoFeedback('Saving '+file.name+' ('+(file.size/1048576).toFixed(1)+' MB) on this device…');
+    videoPersistence='Saving on this device…';
+    setVideoFeedback('File received: '+file.name+' ('+(file.size/1048576).toFixed(1)+' MB). '+videoPersistence);
     try{
+      // Show the selected file immediately; do not wait for IndexedDB or other media.
+      if(selectedVideoUrl)URL.revokeObjectURL(selectedVideoUrl);
+      selectedVideoUrl=URL.createObjectURL(file);
+      videoPanel.hidden=false;videoName.textContent=file.name;
+      videoState.textContent='Loading preview…';
+      videoPreview.src=selectedVideoUrl;videoPreview.load();
       await dbPut(file);
       siteSettings.videoFilename=file.name;
       try{saveSiteSettings();}catch(error){siteSettings.videoFilename=previous;throw error;}
-      await renderSiteMedia();
-      setVideoFeedback('Saved on this device. Checking playback… This is a local preview; it is not published yet.');
+      videoPersistence='Saved on this device. Not published yet.';
+      setVideoFeedback(file.name+' — '+videoPersistence);
     }catch(error){
-      const quota=error?.name==='QuotaExceededError';
-      setVideoFeedback(quota?'Not enough browser storage. Choose a smaller video or free device storage and try again.':'Could not save this video on this device. Try a smaller file from Files in Safari. '+(error?.message||''));
+      videoPersistence='Not saved.';
+      const reason=error?.name==='QuotaExceededError'?'Not enough browser storage. Try a smaller video.':(error?.message||'Browser storage is unavailable.');
+      setVideoFeedback('File received, but not saved. '+reason+' The temporary preview may still work; keep the original file.');
     }finally{
-      videoBusy=false;videoDrop.removeAttribute('aria-busy');
+      videoBusy=false;videoFile.disabled=false;videoDrop.removeAttribute('aria-busy');
     }
   }
   videoPreview.addEventListener('loadedmetadata',()=>{
     videoState.textContent='Preview ready · '+videoPreview.videoWidth+' × '+videoPreview.videoHeight;
-    setVideoFeedback('Preview ready on this device. For wider browser compatibility, use an MP4 encoded with H.264 video and AAC audio. Publishing still requires the video and site-settings.js in GitHub.');
   });
   videoPreview.addEventListener('error',()=>{
-    videoState.textContent='Preview unavailable';
-    setVideoFeedback('This browser could not play the video. If it was just selected, the file may still be saved locally. For a selected MOV/HEVC file, export or convert to MP4 with H.264 video and AAC audio. Renaming the extension does not convert it.');
+    videoState.textContent='Preview unavailable. This may be a codec or file-read problem. Try MP4 with H.264 video and AAC audio; renaming the extension will not convert it.';
   });
   ['dragenter','dragover'].forEach(evt=>videoDrop.addEventListener(evt,e=>{e.preventDefault();videoDrop.classList.add('dragging');}));
   ['dragleave','drop'].forEach(evt=>videoDrop.addEventListener(evt,e=>{e.preventDefault();videoDrop.classList.remove('dragging');}));
   videoDrop.addEventListener('drop',e=>addVideo(e.dataTransfer.files));
-  videoDrop.addEventListener('click',e=>{if(e.target===videoFile||e.target.closest('button')||videoBusy)return;videoFile.click();});
-  videoDrop.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();videoFile.click();}});
-  document.getElementById('choose-video').onclick=e=>{e.stopPropagation();videoFile.click();};
+  // Use the browser's native file control. No synthetic click on a hidden input.
+  videoFile.addEventListener('click',()=>setVideoFeedback('Choose a movie. Once the phone passes the file to this page, its name and size will appear here. If Photos stalls, save the movie to Files and choose it from there.'));
+  videoFile.addEventListener('cancel',()=>setVideoFeedback('No new file selected. You can try again using Files.'));
   videoFile.onchange=async()=>{try{await addVideo(videoFile.files);}finally{videoFile.value='';}};
   document.getElementById('download-video').onclick=async()=>{
     const name=siteSettings.videoFilename;if(!name)return;const item=await dbGet(name);
@@ -311,5 +337,5 @@
   };
 
   document.getElementById('download-data').onclick=()=>{const isDe=state.lang==='de';const varName=isDe?'window.OUSIA_PROJECTS_DE':'window.OUSIA_PROJECTS';const filename=isDe?'projects-data-de.js':'projects-data.js';const body=`${varName} = ${JSON.stringify(currentList(),null,2)};\n`;const blob=new Blob([body],{type:'text/javascript;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
-  render();
+  render().catch(error=>{setManagerTab('site');setVideoFeedback('Browser storage could not be loaded. You can still select a video to preview it. '+(error?.message||''));});
 })();
