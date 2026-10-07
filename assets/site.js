@@ -1,6 +1,6 @@
 const CONFIG={
   email:"danielstofner@hotmail.com",
-  linkedin:"#",
+  linkedin:"https://www.linkedin.com/in/daniel-stofner-4b838a127",
   instagram:"#",
   videoSrc:""
 };

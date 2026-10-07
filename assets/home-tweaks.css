@@ -1,8 +1,19 @@
 /* Homepage spacing refinements — 2026-09-17 */
 
-/* Keep the hero compact without losing the full-screen editorial feel. */
+/* Content-sized hero: remove the viewport-height gap above the headline. */
+.hero.hero-personal{
+  min-height:0!important;
+}
 .hero-personal .hero-copy{
-  padding-bottom:48px;
+  min-height:0!important;
+  padding-top:150px!important;
+  padding-bottom:64px!important;
+}
+@media(max-width:850px){
+  .hero-personal .hero-copy{
+    padding-top:112px!important;
+    padding-bottom:40px!important;
+  }
 }
 .hero-personal .hero-copy h1{
   margin-top:12px;
