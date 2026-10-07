@@ -90,3 +90,10 @@ Edit the CONFIG block at the top of `assets/site.js` and `assets/site-de.js`.
 
 ## Strategic purpose
 The site is structured as a portfolio for independent, complementary, project-based collaboration rather than as a conventional full-service agency site.
+
+
+## Search metadata and published project HTML
+
+After exporting and replacing either project data file, run `node scripts/seo-build.cjs` and commit the generated HTML, robots.txt and sitemap.xml together with the data. The script refreshes static project content, canonical URLs, EN/DE alternatives and social metadata. For a new project slug, first copy a matching language project HTML template into `projects/<slug>/index.html` and `de/projects/<slug>/index.html`, updating `data-project-slug` and language navigation. Existing query-string links redirect to the static project pages; new, not-yet-generated slugs keep the generic rendering route.
+
+The sitemap is https://ousiadesign.ch/sitemap.xml. Submit it in the verified Google Search Console property when account access is available. No verification token is embedded unless supplied by the property owner.
