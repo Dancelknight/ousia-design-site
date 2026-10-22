@@ -17,9 +17,9 @@
   };
 
   async function loadPortrait(){
-    const imgs=[...document.querySelectorAll('img[src*="daniel-stofner-profile"], .profile-card-photo img, .profile-intro-photo img')];
+    const imgs=[...document.querySelectorAll('img[src*="daniel-stofner-"], .hero-person img, .profile-card-photo img, .profile-intro-photo img')];
     if(!imgs.length)return;
-    const name=localSettings.profileFilename||publicSettings.profileFilename||'daniel-stofner-profile-clean.jpg';
+    const name=(/\.png$/i.test(localSettings.profileFilename||'')?localSettings.profileFilename:null)||publicSettings.profileFilename||'daniel-stofner-transparent.png';
     const local=await getLocal(name);
     let src;
     if(local?.blob) src=URL.createObjectURL(local.blob);

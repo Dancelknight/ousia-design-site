@@ -10,9 +10,10 @@ if(header&&navLang&&!header.querySelector('.lang-quick')){const q=navLang.cloneN
 if(btn&&panel){btn.addEventListener('click',()=>panel.classList.toggle('open'));panel.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>panel.classList.remove('open')))}
 
 const projects=window.OUSIA_PROJECTS_DE||[];
-document.querySelectorAll('[data-project-count]').forEach(el=>el.textContent=`${projects.length} Projekt${projects.length===1?'':'e'}`);
+const homepageProjects=window.OUSIA_HOME?window.OUSIA_HOME.render(projects,true):projects;
+document.querySelectorAll('[data-project-count]').forEach(el=>el.textContent=`${homepageProjects.length} Projekt${homepageProjects.length===1?'':'e'}`);
 const list=document.querySelector('[data-project-list]');
-if(list){list.innerHTML=projects.map((p,i)=>`<a class="project-row" href="project/?p=${encodeURIComponent(p.slug)}"><div class="project-image"><img src="../assets/images/${p.cover}" alt="${p.title}" loading="${i>1?'lazy':'eager'}"></div><div class="project-meta"><span class="number">Projekt ${p.number}</span><div class="project-copy"><div class="tags">${p.category}${p.location?' · '+p.location:''}</div><h3>${p.shortTitle||p.title}</h3><span class="text-link">Projekt ansehen</span></div></div></a>`).join('')}
+if(list){list.innerHTML=homepageProjects.map((p,i)=>`<a class="project-row" href="project/?p=${encodeURIComponent(p.slug)}"><div class="project-image"><img src="../assets/images/${p.cover}" alt="${p.title}" loading="${i>1?'lazy':'eager'}"></div><div class="project-meta"><span class="number">Projekt ${p.number}</span><div class="project-copy"><div class="tags">${p.category}${p.location?' · '+p.location:''}</div><h3>${p.shortTitle||p.title}</h3><span class="text-link">Projekt ansehen</span></div></div></a>`).join('')}
 
 const detail=document.querySelector('[data-project-detail]');
 if(detail){

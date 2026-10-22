@@ -109,6 +109,10 @@
 }
 
 /* Zurich positioning: project-led hero with a compact, unprocessed portrait. */
+.hero-featured-slot{display:flex;min-width:0}
+.hero-featured-slot[hidden]{display:none}
+.hero-featured-slot .hero-project{width:100%}
+.hero.hero-zurich.without-featured{grid-template-columns:1fr!important}
 .hero.hero-zurich{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr)!important;gap:0;align-items:stretch}
 .hero-zurich .hero-copy{padding:150px var(--pad) 64px!important;justify-content:center!important;min-width:0}
 .hero-zurich .hero-copy h1{font-size:clamp(40px,4.6vw,76px);line-height:1.03;letter-spacing:-.045em;overflow-wrap:normal}

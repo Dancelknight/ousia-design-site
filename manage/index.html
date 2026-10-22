@@ -3,7 +3,7 @@
 <main class="manager-shell">
   <aside class="manager-sidebar">
     <div class="manager-language"><button data-lang="en" class="active">EN</button><button data-lang="de">DE</button></div>
-    <button type="button" id="site-nav" class="site-nav-button"><strong>Site</strong><small>Profile · logo · video</small></button>
+    <button type="button" id="site-nav" class="site-nav-button"><strong>Site</strong><small>Featured project · portrait · logo · video</small></button>
     <div class="sidebar-section-label">Projects</div>
     <div class="manager-actions"><button id="new-project">+ New project</button><button id="duplicate-project">Duplicate</button></div>
     <div id="project-list" class="manager-project-list"></div>
@@ -11,10 +11,10 @@
   </aside>
   <section class="manager-editor">
     <div class="manager-note" data-manager-pane="projects"><strong>How it works</strong><p>Edit project text and drag photos directly into the project below. Dropped files are stored locally in this browser and can be previewed immediately. To publish project images, add them to <code>assets/images/</code>. Site media such as the process film can also be managed here.</p></div>
-    <section class="site-media-manager" data-manager-pane="site" hidden>
-      <div class="media-heading"><div><span class="media-kicker">Site media</span><h2>Profile portrait</h2></div><span class="media-help">PNG recommended · transparent background works best</span></div>
+    <section class="site-media-manager" data-manager-pane="site" hidden><h2>Featured project / Projekt im Fokus</h2><label for="featured-project">Project at the top of the homepage (EN + DE)</label><select id="featured-project"></select><p id="featured-state" role="status"></p><p>The featured project appears only once, above the project list. Choose “None” to show all projects in the list.</p><p><a id="preview-home" href="../?preview=1" target="_blank">Preview homepage ↗</a></p><button type="button" id="download-settings" class="button ghost small">Download site-settings.js</button><p>Changes are saved in this browser only. To publish, commit the exported settings to assets/site-settings.js on GitHub and rebuild the static pages.</p><div class="site-media-divider"></div>
+      <div class="media-heading"><div><span class="media-kicker">Site media</span><h2>Profile portrait</h2></div><span class="media-help">Transparent PNG required · no white background</span></div>
       <div id="profile-drop" class="drop-zone profile-drop" tabindex="0">
-        <input id="profile-file" type="file" accept="image/png,image/jpeg,image/webp" hidden>
+        <input id="profile-file" type="file" accept="image/png,.png" hidden>
         <div class="drop-icon">＋</div>
         <strong>Drop your profile image here</strong>
         <span>or <button type="button" class="inline-upload" id="choose-profile">choose image</button></span>
@@ -51,7 +51,7 @@
       <div id="video-panel" class="video-panel" hidden>
         <video id="video-preview" controls playsinline preload="metadata"></video>
         <div class="video-meta"><strong id="video-name"></strong><span id="video-state"></span></div>
-        <div class="video-actions"><button type="button" id="download-video" class="button ghost small">Download video</button><button type="button" id="download-settings" class="button ghost small">Download site-settings.js</button><button type="button" id="remove-video" class="button ghost small danger">Remove</button></div>
+        <div class="video-actions"><button type="button" id="download-video" class="button ghost small">Download video</button><button type="button" id="remove-video" class="button ghost small danger">Remove</button></div>
       </div>
     </section>
     <div data-manager-pane="projects">
@@ -94,4 +94,4 @@
     </div>
   </section>
 </main>
-<script src="../assets/projects-data.js"></script><script src="../assets/projects-data-de.js"></script><script src="../assets/site-settings.js?v=20260925c"></script><script src="../assets/manage.js?v=20261007-mobile2"></script></body></html>
+<script src="../assets/projects-data.js"></script><script src="../assets/projects-data-de.js"></script><script src="../assets/site-settings.js?v=20261022-featured"></script><script src="../assets/manage.js?v=20261022-featured"></script></body></html>
