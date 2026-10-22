@@ -147,3 +147,9 @@
  .profile-card.profile-unified{grid-template-columns:1fr!important}
  .profile-unified .profile-card-photo{justify-self:start!important;width:180px!important}
 }
+
+/* Concept-led headline: readable wrapping on small screens. */
+.hero-zurich .hero-copy h1.concept-headline{font-size:clamp(30px,3.7vw,60px);overflow-wrap:anywhere;hyphens:manual}
+.hero-zurich .hero-detail{font-size:16px;line-height:1.6;max-width:570px;margin:0 0 28px;color:#ccc}
+.hero-zurich .hero-copy:has(.concept-headline) .hero-lead{margin-bottom:14px}
+@media(max-width:540px){.hero-zurich .hero-copy h1.concept-headline{font-size:clamp(29px,8vw,42px)}}
