@@ -18,7 +18,7 @@
     markup(project,de){
       if(!project)return '';
       const image=(de?'../':'')+'assets/images/'+project.cover;
-      return `<a class="hero-project" href="project/?p=${encodeURIComponent(project.slug)}"><img src="${escape(image)}" alt="${escape(project.title)}" fetchpriority="high"><span>${de?'Im Fokus':'Featured project'} · ${escape(project.shortTitle||project.title)}${project.location?' · '+escape(project.location):''} · ${de?'Projekt ansehen':'View project'} ↗</span></a>`;
+      return `<a class="hero-project" href="project/?p=${encodeURIComponent(project.slug)}"><img src="${escape(image)}" alt="${escape(project.title)}" fetchpriority="high"><span>${de?'Im Fokus':'Featured project'} · ${escape(project.shortTitle||project.title)}${project.location?' · '+escape(project.location):''} · ${de?'Projekt ansehen':'View project'}</span></a>`;
     },
     render(projects,de){
       const slot=document.querySelector('[data-featured-project]');
