@@ -1,4 +1,12 @@
 /* Homepage spacing refinements — 2026-09-17 */
+.project-starts{padding:clamp(52px,7vw,96px) var(--pad);background:#eeeae3;color:#181818}
+.project-starts-heading h2{font-size:clamp(30px,4vw,52px);font-weight:400;letter-spacing:-.035em;margin:12px 0 36px}
+.project-starts-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(28px,6vw,90px)}
+.project-starts-grid article{border-top:1px solid #aaa59b;padding-top:24px;min-width:0}
+.project-starts-grid h3{font-size:clamp(24px,2.5vw,34px);font-weight:400;line-height:1.2;margin:18px 0}
+.project-starts-grid p{max-width:600px;font-size:17px;line-height:1.65;margin-bottom:24px}
+.project-starts a:focus-visible{outline:2px solid currentColor;outline-offset:5px}
+@media(max-width:700px){.project-starts-grid{grid-template-columns:1fr;gap:40px}}
 
 /* Content-sized hero: remove the viewport-height gap above the headline. */
 .hero.hero-personal{
