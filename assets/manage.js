@@ -51,10 +51,12 @@
   function setManagerTab(tab){
     panes.forEach(p=>p.hidden=p.dataset.managerPane!==tab);
     siteNav.classList.toggle('active',tab==='site');
+    document.getElementById('shop-nav').classList.toggle('active',tab==='shop');
     document.querySelectorAll('#project-list button').forEach((b,i)=>b.classList.toggle('active',tab==='projects'&&i===state.selected));
     localStorage.setItem('ousia-manager-tab',tab);
   }
   siteNav.onclick=()=>setManagerTab('site');
+  document.getElementById('shop-nav').onclick=()=>setManagerTab('shop');
   const save=()=>localStorage.setItem('ousia-content-manager',JSON.stringify(state));
   const currentList=()=>state[state.lang];
   const otherLang=()=>state.lang==='en'?'de':'en';
