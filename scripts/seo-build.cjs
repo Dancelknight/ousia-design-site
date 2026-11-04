@@ -31,6 +31,7 @@ function walk(dir){return fs.readdirSync(path.join(root,dir),{withFileTypes:true
 for(const p of [...walk('ousia_portfolio_site/').filter(p=>p.endsWith('.html')),'manage/index.html','404.html'])save(p,read(p).replace(/<meta name="robots"[^>]*>/g,'').replace('</head>','<meta name="robots" content="noindex,follow"></head>'));
 for(const p of ['about/index.html','de/about/index.html'])save(p,read(p).replace(/href="\.\.\/profile\/"/,'href="'+base+(p.startsWith('de/')?'/de':'')+'/profile/"'));
 save('robots.txt','User-agent: *\nAllow: /\n\nSitemap: '+base+'/sitemap.xml\n');
+for(const lang of ['','de/']) for(const route of ['shop/','legal/','privacy/']) urls.push(base+'/'+lang+route);
 save('sitemap.xml','<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+urls.map(u=>'<url><loc>'+u+'</loc></url>').join('\n')+'\n</urlset>\n');
 // Keep existing query-string project links compatible while identifying the static canonical.
 for(const lang of ['en','de']){const pre=lang==='de'?'de/':'';const p=pre+'project/index.html';let h=read(p).replace(/<script data-project-redirect>[\s\S]*?<\/script>/g,'');const slugs=data[lang].map(p=>p.slug);const script=`<script data-project-redirect>(()=>{const slug=new URLSearchParams(location.search).get('p');if(${JSON.stringify(slugs)}.includes(slug)){location.replace('/${pre}projects/'+encodeURIComponent(slug)+'/'+location.hash);}})();</script>`;save(p,h.replace('</head>',script+'</head>'));}
