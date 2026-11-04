@@ -25,7 +25,7 @@ const list=document.querySelector('[data-project-list]');
 if(list){
   list.innerHTML=homepageProjects.map((p,i)=>`<a class="project-row" href="project/?p=${encodeURIComponent(p.slug)}">
     <div class="project-image"><img src="assets/images/${p.cover}" alt="${p.title}" loading="${i>1?'lazy':'eager'}"></div>
-    <div class="project-meta"><span class="number">Project ${p.number}</span><div class="project-copy"><div class="tags">${p.category}${p.location&&p.location!=='Italy'?' · '+p.location:''}</div><h3>${p.shortTitle||p.title}</h3><span class="text-link">View project</span></div></div>
+    <div class="project-meta"><span class="number">Project ${String(i+1).padStart(2,'0')}</span><div class="project-copy"><div class="tags">${p.category}${p.location&&p.location!=='Italy'?' · '+p.location:''}</div><h3>${p.shortTitle||p.title}</h3><span class="text-link">View project</span></div></div>
   </a>`).join('');
 }
 
