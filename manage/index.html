@@ -10,7 +10,7 @@
     <div class="manager-actions compact"><button id="move-up">↑ Up</button><button id="move-down">↓ Down</button><button id="delete-project" class="danger">Delete</button></div>
   </aside>
   <section class="manager-editor"><section data-manager-pane="shop" id="shop-manager" hidden></section>
-    <div class="manager-note" data-manager-pane="projects"><strong>How it works</strong><p>Edit project text and drag photos directly into the project below. Dropped files are stored locally in this browser and can be previewed immediately. To publish project images, add them to <code>assets/images/</code>. Site media such as the process film can also be managed here.</p></div>
+    <div class="manager-note" data-manager-pane="projects"><strong>How it works</strong><p>Edit project text and drag photos directly into the project below. Dropped files are stored locally in this browser and can be previewed immediately. To publish, commit the exported project data and images to GitHub, then run <code>node scripts/seo-build.cjs</code> and commit the generated pages and sitemap. This also refreshes titles and descriptions for search engines. Site media such as the process film can also be managed here.</p></div>
     <section class="site-media-manager" data-manager-pane="site" hidden><h2>Featured project / Projekt im Fokus</h2><label for="featured-project">Project at the top of the homepage (EN + DE)</label><select id="featured-project"></select><p id="featured-state" role="status"></p><p>The featured project appears only once, above the project list. Choose “None” to show all projects in the list.</p><p><a id="preview-home" href="../?preview=1" target="_blank">Preview homepage ↗</a></p><button type="button" id="download-settings" class="button ghost small">Download site-settings.js</button><p>Changes are saved in this browser only. To publish, commit the exported settings to assets/site-settings.js on GitHub and rebuild the static pages.</p><div class="site-media-divider"></div>
       <div class="media-heading"><div><span class="media-kicker">Site media</span><h2>Profile portrait</h2></div><span class="media-help">Transparent PNG required · no white background</span></div>
       <div id="profile-drop" class="drop-zone profile-drop" tabindex="0">
@@ -56,7 +56,7 @@
     </section>
     <div data-manager-pane="projects">
     <form id="project-form">
-      <div class="field-grid two"><label>Slug<input name="slug" required placeholder="project-name"></label><label>Number<input name="number" placeholder="11"></label></div>
+      <div class="field-grid two"><label>Slug<input name="slug" required placeholder="project-name"></label><label>Internal reference (website numbering is automatic)<input name="number" placeholder="11"></label></div>
       <div class="field-grid two"><label>Title<input name="title"></label><label>Short title<input name="shortTitle"></label></div>
       <div class="field-grid two"><label>Category<input name="category"></label><label>Location<input name="location"></label></div>
       <div class="field-grid two"><label>Client type<input name="clientType"></label><label>Status<input name="status"></label></div>

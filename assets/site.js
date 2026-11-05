@@ -23,7 +23,7 @@ document.querySelectorAll('[data-project-count]').forEach(el=>el.textContent=`${
 
 const list=document.querySelector('[data-project-list]');
 if(list){
-  list.innerHTML=homepageProjects.map((p,i)=>`<a class="project-row" href="project/?p=${encodeURIComponent(p.slug)}">
+  list.innerHTML=homepageProjects.map((p,i)=>`<a class="project-row" href="${new URLSearchParams(location.search).get('preview')==='1'?'project/?p='+encodeURIComponent(p.slug)+'&preview=1':'projects/'+encodeURIComponent(p.slug)+'/'}">
     <div class="project-image"><img src="assets/images/${p.cover}" alt="${p.title}" loading="${i>1?'lazy':'eager'}"></div>
     <div class="project-meta"><span class="number">Project ${String(i+1).padStart(2,'0')}</span><div class="project-copy"><div class="tags">${p.category}${p.location&&p.location!=='Italy'?' · '+p.location:''}</div><h3>${p.shortTitle||p.title}</h3><span class="text-link">View project</span></div></div>
   </a>`).join('');
@@ -37,7 +37,7 @@ if(detail){
   const legacy=location.pathname.includes('/projects/');
   const imageBase=legacy?'../../assets/images/':'../assets/images/';
   if(p){
-    document.title=`${p.title} — Ousia Design`;
+    if(!legacy)document.title=`${p.title} — Ousia Design`;
     const galleryImages=(p.images||[]).filter(img=>img&&img!==p.plan);
     const first=galleryImages[0]||p.cover;
     const rest=galleryImages.slice(1);
@@ -55,7 +55,7 @@ if(detail){
 }
 function nextProjectHTML(p,legacy=false){
   const i=projects.findIndex(x=>x.slug===p.slug),n=projects[(i+1)%projects.length];
-  const href=legacy?`../../project/?p=${encodeURIComponent(n.slug)}`:`?p=${encodeURIComponent(n.slug)}`;
+  const href=legacy?`../${encodeURIComponent(n.slug)}/`:`?p=${encodeURIComponent(n.slug)}`;
   return `<a class="next" href="${href}" data-header-theme="light"><div><small>Next project</small><h2>${n.shortTitle||n.title}</h2></div><span class="text-link">View</span></a>`;
 }
 
