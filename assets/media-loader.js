@@ -81,22 +81,12 @@
   async function loadVideo(){
     const section=document.querySelector('[data-film-section]'),video=document.querySelector('[data-film]');
     if(!section||!video)return;
-    const filename=localSettings.videoFilename||publicSettings.videoFilename||null;
-    if(!filename){section.hidden=true;return;}
-    const local=await getLocal(filename);
-    if(local?.blob){
-      video.src=URL.createObjectURL(local.blob);
-      video.preload='metadata';video.playsInline=true;section.hidden=false;enableScrollPlayback(video);return;
-    }
-    const url=new URL('media/'+filename,assetsBase);
-    try{
-      const head=await fetch(url,{method:'HEAD',cache:'no-store'});
-      if(!head.ok)throw new Error(String(head.status));
-      video.src=url.href;video.preload='metadata';video.playsInline=true;section.hidden=false;enableScrollPlayback(video);
-    }catch(e){
-      section.hidden=true;
-      console.warn('Process film not published yet',e);
-    }
+    const url=new URL('media/'+publicSettings.videoFilename,assetsBase).href;
+    const attach=src=>{video.src=src;video.preload='metadata';video.playsInline=true;section.hidden=false;enableScrollPlayback(video);};
+    if(!localSettings.videoFilename){if(publicSettings.videoFilename)attach(url);return;}
+    const local=await Promise.race([getLocal(localSettings.videoFilename),new Promise(r=>setTimeout(()=>r(null),1800))]);
+    if(local?.blob){if(publicSettings.videoFilename)video.addEventListener('error',()=>{video.src=url;},{once:true});attach(URL.createObjectURL(local.blob));}
+    else if(publicSettings.videoFilename)attach(url);
   }
 
   loadPortrait();
