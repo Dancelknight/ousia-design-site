@@ -75,6 +75,34 @@ window.OUSIA_SHOP = {
       "sku": "",
       "shopifyProductId": "",
       "concept": true
+    },
+    {
+      "id": "schlern-sofa",
+      "category": "sofas",
+      "status": "preview",
+      "name": {
+        "de": "Schlern — Sofa",
+        "en": "Schlern — Sofa"
+      },
+      "description": {
+        "de": "Die Rückenlinie zeichnet das Profil des Schlern nach. Unter dem gemusterten Rückenpolster liegt eine breite, helle Sitzfläche. Ein dunkler Gurt mit rundem Metallbeschlag fasst sie ein.",
+        "en": "The backrest traces the silhouette of the Schlern massif. Below its patterned cushion, a dark belt with a circular metal fitting wraps around the wide, pale seat."
+      },
+      "material": {
+        "de": "Materialidee: heller Bouclé, dunkles Leder und messingfarbene Details. Designvisualisierung; die Ausführung ist noch offen.",
+        "en": "Material study: pale bouclé, dark leather and brass-toned details. Design visualisation; finishes are still in development."
+      },
+      "dimensions": {
+        "de": "In Entwicklung",
+        "en": "In development"
+      },
+      "images": [
+        "shop-schlern-sofa.jpg"
+      ],
+      "handle": "schlern-sofa",
+      "sku": "",
+      "shopifyProductId": "",
+      "concept": true
     }
   ]
 };
