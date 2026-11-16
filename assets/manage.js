@@ -62,6 +62,21 @@
   const otherLang=()=>state.lang==='en'?'de':'en';
   const current=()=>currentList()[state.selected]||null;
   const findOther=slug=>state[otherLang()].find(p=>p.slug===slug)||null;
+  document.getElementById('translate-project').onclick=()=>{
+ const slug=current()?.slug;if(!slug)return;
+ const source=state.de.find(p=>p.slug===slug),target=state.en.find(p=>p.slug===slug);
+ if(!source||!target){alert('Verbundene DE/EN-Projektdaten fehlen.');return;}
+ const before=JSON.stringify([source,target]);
+ window.OusiaTranslation.review(clone(source),clone(target),patch=>{
+ const de=state.de.find(p=>p.slug===slug),en=state.en.find(p=>p.slug===slug);
+ if(JSON.stringify([de,en])!==before)throw Error('Projekt wurde inzwischen geändert. Bitte Übersetzung neu öffnen.');
+ const old=clone(en);Object.assign(en,patch);
+ try{save();}catch(e){Object.assign(en,old);throw Error('Nicht gespeichert: '+e.message);}
+ state.lang='en';state.selected=state.en.findIndex(p=>p.slug===slug);
+ document.querySelectorAll('[data-lang]').forEach(b=>b.classList.toggle('active',b.dataset.lang==='en'));
+ render();
+ });
+ };
   const sharedFields=new Set(['slug','number','cover','plan','images']);
   let objectUrls=[];
   let siteObjectUrls=[];
