@@ -288,7 +288,18 @@
   galleryDrop.addEventListener('click',e=>{if(e.target.closest('button'))return;galleryFiles.click();});
   galleryDrop.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();galleryFiles.click();}});
   document.getElementById('choose-gallery').onclick=e=>{e.stopPropagation();galleryFiles.click();};
-  galleryFiles.onchange=async()=>{await addFiles(galleryFiles.files);galleryFiles.value='';};
+  for(const id of ['add-gallery-top','add-gallery-bottom'])document.getElementById(id).onclick=()=>galleryFiles.click();
+  galleryFiles.onchange=async()=>{
+    const files=[...galleryFiles.files];if(!files.length)return;
+    const status=document.getElementById('gallery-upload-status');
+    const supported=files.filter(f=>/^image\/(jpeg|png|webp)$/i.test(f.type));
+    if(!supported.length){status.textContent='Kein unterstütztes Bild ausgewählt. Bitte JPG, PNG oder WebP verwenden.';galleryFiles.value='';return;}
+    const controls=['add-gallery-top','add-gallery-bottom','choose-gallery'].map(id=>document.getElementById(id));
+    controls.forEach(b=>b.disabled=true);status.textContent='Bilder werden lokal gespeichert …';
+    try{await addFiles(files);status.textContent=supported.length+' Bild(er) im lokalen Entwurf hinzugefügt. Zum Prüfen „Entwurf mit neuen Bildern ansehen“ öffnen.'+(files.length>supported.length?' Nicht unterstützte Dateien wurden übersprungen.':'');}
+    catch(e){status.textContent='Hinzufügen nicht vollständig abgeschlossen: '+e.message;}
+    finally{galleryFiles.value='';controls.forEach(b=>b.disabled=false);}
+  };
 
   document.querySelectorAll('[data-lang]').forEach(b=>b.onclick=()=>{const slug=current()?.slug;state.lang=b.dataset.lang;if(slug){const i=currentList().findIndex(p=>p.slug===slug);state.selected=i>=0?i:Math.min(state.selected,currentList().length-1);}save();render();});
 
