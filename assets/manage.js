@@ -152,15 +152,17 @@
   async function renderMedia(){
     objectUrls.forEach(URL.revokeObjectURL);objectUrls=[];
     const p=current();if(!p){mediaPreview.innerHTML='';return;}
-    const names=[...new Set((p.images||[]).filter(Boolean))];
+    const names=[...new Set([p.cover,...(p.images||[]),p.plan].filter(Boolean))];
     mediaPreview.innerHTML='';
     if(!names.length){mediaPreview.innerHTML='<div class="empty-media">No project photos yet. Drop the first images above.</div>';}
     for(const name of names){
       const {src,local}=await imageSrc(name);
       const card=document.createElement('article');card.className='media-card';
-      card.innerHTML=`<div class="media-thumb"><img src="${src}" alt=""><span class="asset-state ${local?'local':''}">${local?'local upload':'live asset'}</span></div><div class="media-card-body"><strong title="${name}">${name}</strong><div class="media-badges">${p.cover===name?'<span>Cover</span>':''}${p.plan===name?'<span>Plan</span>':''}</div><div class="media-actions"><button type="button" data-act="cover">Set cover</button><button type="button" data-act="plan">Set plan</button><button type="button" data-act="remove" class="danger-link">Remove</button></div></div>`;
+      card.innerHTML=`<div class="media-thumb"><img src="${src}" alt=""><span class="asset-state ${local?'local':''}">${local?'local upload':'live asset'}</span></div><div class="media-card-body"><strong title="${name}">${name}</strong><div class="media-badges">${p.cover===name?'<span>Cover</span>':''}${p.plan===name?'<span>Plan</span>':''}${p.cover!==name&&p.plan!==name?'<span>Galeriebild</span>':''}</div><div class="media-actions"><button type="button" data-act="cover">Set cover</button><button type="button" data-act="plan">Set plan</button><button type="button" data-act="gallery">Als Galeriebild</button><button type="button" data-act="remove" class="danger-link">Remove</button></div></div>`;
       card.querySelector('[data-act="cover"]').onclick=()=>setMediaRole(name,'cover');
       card.querySelector('[data-act="plan"]').onclick=()=>setMediaRole(name,'plan');
+      card.querySelector('[data-act="gallery"]').onclick=()=>setMediaRole(name,'gallery');
+      card.querySelector('img').onerror=()=>{const note=document.createElement('p');note.textContent='Bilddatei nicht erreichbar. Bitte diese Datei erneut hochladen: '+name;card.querySelector('.media-card-body').prepend(note);};
       card.querySelector('[data-act="remove"]').onclick=()=>removeMedia(name);
       mediaPreview.appendChild(card);
     }
@@ -235,8 +237,22 @@
     syncShared(p);save();fillForm();await renderMedia();
   }
   function setMediaRole(name,role){
-    const p=current();if(!p)return;p[role]=name;
+    const p=current();if(!p)return;
+    p.images=p.images||[];
     if(!p.images.includes(name))p.images.push(name);
+    if(role==='gallery'){
+      if(p.plan===name)p.plan=null;
+      if(p.cover===name){
+        const replacement=p.images.find(n=>n!==name&&n!==p.plan);
+        if(!replacement){alert('Dieses Bild ist das einzige verfügbare Hauptbild. Bitte zuerst ein weiteres Bild als Cover wählen.');return;}
+        p.cover=replacement;
+      }
+    }else{
+      p[role]=name;
+      if(role==='cover'&&p.plan===name)p.plan=null;
+      if(role==='plan'&&p.cover===name)p.cover=p.images.find(n=>n!==name)||'';
+    }
+    if(p.cover)p.images=[p.cover,...p.images.filter(n=>n!==p.cover)];
     syncShared(p);save();fillForm();renderMedia();
   }
   async function removeMedia(name){
