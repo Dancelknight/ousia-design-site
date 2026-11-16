@@ -55,8 +55,8 @@
       </div>
     </section>
     <div data-manager-pane="projects">
-    <form id="project-form">
-      <div class="field-grid two"><label>Slug<input name="slug" required placeholder="project-name"></label><label>Internal reference (website numbering is automatic)<input name="number" placeholder="11"></label></div>
+    <form id="project-form"><p id="numbering-help">Die Nummer folgt automatisch der Reihenfolge auf der Startseite. Das Fokusprojekt steht separat und wird nicht mitgezählt. Änderungen sind zunächst lokale Entwürfe; die Live-Seite ändert sich erst nach Veröffentlichung.</p>
+      <div class="field-grid two"><label>Slug<input name="slug" required placeholder="project-name"></label><label>Homepage position / Nummer auf der Startseite<input id="homepage-number" readonly aria-describedby="numbering-help"></label></div>
       <div class="field-grid two"><label>Title<input name="title"></label><label>Short title<input name="shortTitle"></label></div>
       <div class="field-grid two"><label>Category<input name="category"></label><label>Location<input name="location"></label></div>
       <div class="field-grid two"><label>Client type<input name="clientType"></label><label>Status<input name="status"></label></div>
@@ -94,4 +94,4 @@
     </div>
   </section>
 </main>
-<script src="../assets/projects-data.js"></script><script src="../assets/projects-data-de.js"></script><script src="../assets/site-settings.js?v=media-refresh2"></script><script src="../assets/manage.js?v=20261104-shop"></script><script src="../assets/shop-data.js?v=20261104-collection"></script><script src="../assets/shop-core.js?v=media-refresh2"></script><script src="../assets/shop-manager.js?v=media-refresh2"></script></body></html>
+<script src="../assets/projects-data.js"></script><script src="../assets/projects-data-de.js"></script><script src="../assets/site-settings.js?v=media-refresh2"></script><script src="../assets/manage.js?v=20261116-numbering"></script><script src="../assets/shop-data.js?v=20261104-collection"></script><script src="../assets/shop-core.js?v=media-refresh2"></script><script src="../assets/shop-manager.js?v=media-refresh2"></script></body></html>

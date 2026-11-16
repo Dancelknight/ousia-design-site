@@ -45,7 +45,7 @@
     document.getElementById('featured-state').textContent='Local selection: '+(featuredSelect.selectedOptions[0]?.textContent||'None')+' · export settings to publish';
     document.getElementById('preview-home').href=(state.lang==='de'?'../de/':'../')+'?preview=1';
   }
-  featuredSelect.onchange=()=>{siteSettings.featuredProjectSlug=featuredSelect.value||null;saveSiteSettings();renderFeatured();};
+  featuredSelect.onchange=()=>{siteSettings.featuredProjectSlug=featuredSelect.value||null;saveSiteSettings();renderFeatured();renderList();fillForm();};
   const panes=[...document.querySelectorAll('[data-manager-pane]')];
   const siteNav=document.getElementById('site-nav');
   function setManagerTab(tab){
@@ -103,12 +103,28 @@
     if(counterpart)for(const k of sharedFields)counterpart[k]=clone(p[k]);
   }
 
+  function homePositions(){
+    const projects=currentList();
+    const featured=projects.find(p=>p.slug===siteSettings.featuredProjectSlug&&p.cover);
+    const labels=new Map();let n=0;
+    projects.forEach(p=>labels.set(p.slug,p===featured?(state.lang==='de'?'Im Fokus':'Featured'):String(++n).padStart(2,'0')));
+    return {labels,featured};
+  }
   function renderList(){
-    listEl.innerHTML=currentList().map((p,i)=>`<button type="button" data-index="${i}" class="${i===state.selected?'active':''}"><strong>${p.number||'—'} · ${p.shortTitle||p.title||'Untitled'}</strong><small>${p.slug||'no-slug'}</small></button>`).join('');
-    listEl.querySelectorAll('button').forEach(b=>b.onclick=()=>{state.selected=Number(b.dataset.index);save();localStorage.setItem('ousia-manager-tab','projects');render();});
+    const {labels,featured}=homePositions();
+    const rows=currentList().map((p,i)=>({p,i}));
+    if(featured)rows.sort((a,b)=>(b.p===featured)-(a.p===featured));
+    listEl.replaceChildren();
+    for(const {p,i} of rows){
+      const button=document.createElement('button');button.type='button';button.dataset.index=i;button.className=i===state.selected?'active':'';
+      const title=document.createElement('strong');title.textContent=labels.get(p.slug)+' · '+(p.shortTitle||p.title||'Untitled');
+      const slug=document.createElement('small');slug.textContent=p.slug||'no-slug';button.append(title,slug);
+      button.onclick=()=>{state.selected=i;save();localStorage.setItem('ousia-manager-tab','projects');render();};
+      listEl.append(button);
+    }
   }
   function fillForm(){
-    const p=current();if(!p){form.reset();return;}
+    const p=current();document.getElementById('homepage-number').value=p?(homePositions().labels.get(p.slug)||''):'';if(!p){form.reset();return;}
     [...form.elements].forEach(el=>{if(!el.name)return;const v=p[el.name];el.value=el.name==='images'?(v||[]).join('\n'):(v??'');});
     const prefix=state.lang==='de'?'../de/project/?p=':'../project/?p=';
     preview.href=prefix+encodeURIComponent(p.slug||'');
