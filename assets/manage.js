@@ -142,7 +142,7 @@
     const p=current();document.getElementById('homepage-number').value=p?(homePositions().labels.get(p.slug)||''):'';if(!p){form.reset();return;}
     [...form.elements].forEach(el=>{if(!el.name)return;const v=p[el.name];el.value=el.name==='images'?(v||[]).join('\n'):(v??'');});
     const prefix=state.lang==='de'?'../de/project/?p=':'../project/?p=';
-    preview.href=prefix+encodeURIComponent(p.slug||'');
+    preview.href=prefix+encodeURIComponent(p.slug||'')+'&preview=1';
   }
   async function imageSrc(name){
     const local=await dbGet(name);
@@ -218,7 +218,7 @@
     if(siteSettings.featuredProjectSlug===oldSlug){siteSettings.featuredProjectSlug=p.slug;saveSiteSettings();}
     syncShared(p,oldSlug);save();renderList();renderFeatured();
     const prefix=state.lang==='de'?'../de/project/?p=':'../project/?p=';
-    preview.href=prefix+encodeURIComponent(p.slug||'');
+    preview.href=prefix+encodeURIComponent(p.slug||'')+'&preview=1';
     renderMedia();
   }
   form.addEventListener('input',writeForm);
