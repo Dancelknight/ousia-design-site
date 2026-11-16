@@ -145,18 +145,37 @@
     preview.href=prefix+encodeURIComponent(p.slug||'')+'&preview=1';
   }
   async function imageSrc(name){
-    const local=await dbGet(name);
+    const local=await dbGet(name).catch(()=>null);
     if(local?.blob){const u=URL.createObjectURL(local.blob);objectUrls.push(u);return {src:u,local:true};}
     return {src:'../assets/images/'+encodeURIComponent(name).replace(/%2F/g,'/'),local:false};
   }
+  function renderPublishedPlan(p){
+    const host=document.getElementById('published-plan');host.replaceChildren();
+    const live=originals[state.lang].find(x=>x.slug===p.slug);
+    const heading=document.createElement('h3');heading.textContent='Plan auf der veröffentlichten Website';host.append(heading);
+    const status=document.createElement('p');
+    status.textContent=!live?'Dieses Projekt ist unter dieser Kennung noch nicht veröffentlicht.':!live.plan?'Für dieses veröffentlichte Projekt ist keine Planzeichnung hinterlegt.':live.plan===p.plan?'Diese Planzeichnung ist auch im lokalen Entwurf ausgewählt.':'Dein lokaler Entwurf weicht vom veröffentlichten Plan ab.';
+    host.append(status);
+    const link=document.getElementById('media-local-preview');link.href=(state.lang==='de'?'../de/project/?p=':'../project/?p=')+encodeURIComponent(p.slug)+'&preview=1';
+    if(!live?.plan)return;
+    const img=document.createElement('img');img.src='/assets/images/'+encodeURIComponent(live.plan);img.alt='Veröffentlichte Planzeichnung – '+live.title;img.style.cssText='display:block;width:100%;max-width:500px;max-height:360px;object-fit:contain;background:#fff';
+    const filename=document.createElement('p');filename.textContent=live.plan;
+    const use=document.createElement('button');use.type='button';use.textContent='Veröffentlichten Plan in Entwurf übernehmen';use.onclick=()=>setMediaRole(live.plan,'plan');
+    img.onerror=()=>{status.textContent='Die veröffentlichte Plan-Datei ist nicht erreichbar: '+live.plan;};
+    host.append(img,filename,use);
+  }
+  let mediaGeneration=0;
   async function renderMedia(){
+    const generation=++mediaGeneration;
     objectUrls.forEach(URL.revokeObjectURL);objectUrls=[];
     const p=current();if(!p){mediaPreview.innerHTML='';return;}
+    renderPublishedPlan(p);
     const names=[...new Set([p.cover,...(p.images||[]),p.plan].filter(Boolean))];
     mediaPreview.innerHTML='';
     if(!names.length){mediaPreview.innerHTML='<div class="empty-media">No project photos yet. Drop the first images above.</div>';}
     for(const name of names){
       const {src,local}=await imageSrc(name);
+      if(generation!==mediaGeneration)return;
       const card=document.createElement('article');card.className='media-card';
       card.innerHTML=`<div class="media-thumb"><img src="${src}" alt=""><span class="asset-state ${local?'local':''}">${local?'local upload':'live asset'}</span></div><div class="media-card-body"><strong title="${name}">${name}</strong><div class="media-badges">${p.cover===name?'<span>Cover</span>':''}${p.plan===name?'<span>Plan</span>':''}${p.cover!==name&&p.plan!==name?'<span>Galeriebild</span>':''}</div><div class="media-actions"><button type="button" data-act="cover">Set cover</button><button type="button" data-act="plan">Set plan</button><button type="button" data-act="gallery">Als Galeriebild</button><button type="button" data-act="remove" class="danger-link">Remove</button></div></div>`;
       card.querySelector('[data-act="cover"]').onclick=()=>setMediaRole(name,'cover');
@@ -166,7 +185,7 @@
       card.querySelector('[data-act="remove"]').onclick=()=>removeMedia(name);
       mediaPreview.appendChild(card);
     }
-    const all=await dbAll();pendingCount.textContent=all.length?`${all.length} locally stored image file${all.length===1?'':'s'} ready for publishing`:'No locally stored image files';
+    const all=await dbAll().catch(()=>[]);if(generation!==mediaGeneration)return;pendingCount.textContent=all.length?`${all.length} locally stored image file${all.length===1?'':'s'} ready for publishing`:'No locally stored image files';
   }
   async function renderSiteMedia(){
     siteObjectUrls.forEach(URL.revokeObjectURL);siteObjectUrls=[];
